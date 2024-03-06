@@ -2,15 +2,24 @@ import styles from './Auth.module.scss'
 
 // Components
 import { Link } from 'react-router-dom'
+import Message from '../../components/Message'
 
 // Hooks
 import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
+// Redux
+import { register, reset } from '../../slices/authSlice'
 
 const Register = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+
+  const dispatch = useDispatch()
+
+  const { loading, error } = useSelector((state) => state.auth)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -21,7 +30,14 @@ const Register = () => {
       password,
       confirmPassword
     }
+
+    dispatch(register(user))
   }
+
+  // Clean all auth states
+  useEffect(() => {
+    dispatch(reset())
+  }, [dispatch])
 
   return (
     <div className={styles.pageContainer}>
@@ -33,7 +49,9 @@ const Register = () => {
           <input type="email" placeholder='E-mail' onChange={(e) => setEmail(e.target.value)} value={email || ""} />
           <input type="password" placeholder='Senha' onChange={(e) => setPassword(e.target.value)} value={password || ""} />
           <input type="password" placeholder='Confirme a senha' onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword || ""} />
-          <input type="submit" value="Cadastrar" className={styles.btnSubmit} />
+          {!loading && <input type="submit" value="Cadastrar" className={styles.btnSubmit} />}
+          {loading && <input type="submit" value="Aguarde..." disabled className={styles.btnSubmit} />}
+          {error && <Message msg={error} type="error" />}
         </form>
         <p className={styles.terms}>Ao cadastrar-se, você concorda com nossos termos, política de dados e política de cookies.</p>
       </section>

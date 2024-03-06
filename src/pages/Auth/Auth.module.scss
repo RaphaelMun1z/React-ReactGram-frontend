@@ -69,6 +69,10 @@
                 font-weight: 600;
                 padding: .5em;
                 margin-top: .5em;
+
+                &:disabled {
+                    background-color: #000;
+                }
             }
         }
 
