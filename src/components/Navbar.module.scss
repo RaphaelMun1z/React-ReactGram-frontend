@@ -1,0 +1,125 @@
+nav {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    border-bottom: 1px solid #7d7d7d;
+    justify-content: space-between;
+    align-items: center;
+    padding: .7em 5em;
+
+    .logo {
+        position: relative;
+        display: flex;
+        width: fit-content;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            font-size: 25pt;
+            font-weight: 700;
+        }
+    }
+
+    .navbar {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        width: fit-content;
+        height: fit-content;
+        align-items: center;
+        gap: 1em;
+
+        form {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            width: fit-content;
+            height: 50px;
+
+            input {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                width: 250px;
+                height: auto;
+                background-color: #cdcdcd;
+                border: none;
+                border-radius: 5px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                color: #222;
+                padding: .3em 1em;
+                font-size: 12pt;
+            }
+
+            button {
+                position: relative;
+                display: flex;
+                width: fit-content;
+                height: 100%;
+                padding: 1em;
+                color: #222;
+                background-color: #222;
+                border-radius: 5px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border: none;
+                justify-content: center;
+                align-items: center;
+
+                svg{
+                    font-size: 20pt;
+                }
+            }
+        }
+
+        ul {
+            position: relative;
+            display: flex;
+            width: fit-content;
+            height: fit-content;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            li {
+                position: relative;
+                display: flex;
+                list-style: none;
+
+                a {
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 15pt;
+                    border: 1px solid #fff;
+                    color: #fff;
+                    padding: .5em 1em;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    gap: 5px;
+
+                    p {
+                        font-size: 12pt;
+                    }
+                }
+
+                .register {
+                    background-color: rgb(83, 171, 83);
+                    border-color: rgb(83, 171, 83);
+                    color: #fff;
+                }
+
+                .logout {
+                    background-color: red;
+                    border-color: red;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
