@@ -6,21 +6,22 @@ export const requestConfig = (method, data, token = null, image = null) => {
 
     if (image) {
         config = {
+            method: method,
             body: data,
             headers: {}
         }
     } else if (method === "DELETE" || data === null) {
         config = {
-            method,
+            method: method,
             headers: {},
         }
     } else {
         config = {
-            method,
+            method: method,
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
         }
     }
 

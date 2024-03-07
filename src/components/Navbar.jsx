@@ -49,14 +49,12 @@ const Navbar = () => {
                             <li>
                                 <Link to="/">
                                     <RiHome2Line />
-                                    <p>Início</p>
                                 </Link>
                             </li>
                             {user && (
                                 <li>
                                     <NavLink to={`/users/${user._id}`}>
                                         <RiUser6Line />
-                                        <p>Perfil</p>
                                     </NavLink>
                                 </li>
                             )}
@@ -68,7 +66,6 @@ const Navbar = () => {
                             <li>
                                 <span onClick={handleLogout} className={styles.logout}>
                                     <RiLogoutBoxLine />
-                                    <p>Sair</p>
                                 </span>
                             </li>
                         </>
@@ -77,7 +74,6 @@ const Navbar = () => {
                             <li>
                                 <Link to="/Login">
                                     <RiLoginBoxLine />
-                                    <p>Entrar</p>
                                 </Link>
                             </li>
                             <li>
