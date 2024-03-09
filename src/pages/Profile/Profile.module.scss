@@ -15,10 +15,8 @@
         flex-wrap: wrap;
         width: 1000px;
         height: fit-content;
-        border: 1px solid #363636;
-        border-radius: 5px;
-        padding: 2em 3em;
         justify-content: center;
+        gap: 1em;
 
         .header {
             position: relative;
@@ -26,6 +24,9 @@
             flex-wrap: wrap;
             width: 100%;
             height: fit-content;
+            border: 1px solid #363636;
+            border-radius: 5px;
+            padding: 2em 3em;
 
             .imageContainer {
                 position: relative;
@@ -60,7 +61,7 @@
                         font-size: 20pt;
                     }
 
-                    .bio{
+                    .bio {
                         font-size: 12pt;
                     }
                 }
@@ -74,6 +75,169 @@
                 border-radius: 50%;
                 width: 200px;
                 height: 200px;
+            }
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            height: fit-content;
+            border: 1px solid #363636;
+            border-radius: 5px;
+            padding: 2em 3em;
+
+            .newPhoto {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: column;
+                width: 100%;
+                height: fit-content;
+
+                h3 {
+                    font-size: 15pt;
+                    text-align: left;
+                    font-weight: 400;
+                    color: #999;
+                }
+
+                form {
+                    position: relative;
+                    display: flex;
+                    flex-wrap: wrap;
+                    width: 100%;
+                    height: fit-content;
+                    margin: 1em 0;
+                    gap: .5em;
+
+                    label {
+                        position: relative;
+                        display: flex;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        height: fit-content;
+                        gap: 2px;
+
+                        span {
+                            font-size: 12pt;
+                        }
+                    }
+
+                    input {
+                        position: relative;
+                        display: flex;
+                        width: 100%;
+                        height: fit-content;
+                        border: 1px solid #555;
+                        border-radius: 5px;
+                        background-color: #3b3b3b;
+                        padding: .8em 1em;
+                        font-size: 12pt;
+                        color: #fff;
+                    }
+
+                    input::placeholder {
+                        color: #aaa;
+                    }
+
+                    .btnSubmit {
+                        background-color: #0094f6;
+                        color: #fff;
+                        font-size: 14pt;
+                        font-weight: 600;
+                        padding: .5em;
+                        margin-top: .5em;
+
+                        &:disabled {
+                            background-color: #000;
+                        }
+                    }
+                }
+            }
+        }
+
+        .userPhotos {
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: fit-content;
+            gap: 0;
+
+            .photo {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                width: fit-content;
+                height: fit-content;
+                flex: 0 1 300px;
+                overflow: hidden;
+                gap: 5px;
+                background-color: #363636;
+                border: none;
+                border-right: 2.5px solid #121212;
+                border-left: 2.5px solid #121212;
+                border-top: 2.5px solid #121212;
+                border-bottom: 2.5px solid #121212;
+
+                &:hover .actions>button {
+                    opacity: .7;
+                    transition: all .2s ease-in-out;
+                    visibility: visible;
+                }
+
+                img {
+                    position: relative;
+                    display: flex;
+                    width: 300px;
+                    height: 300px;
+                    object-fit: cover;
+                }
+
+                .actions {
+                    position: absolute;
+                    display: flex;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: fit-content;
+                    padding: .5em;
+                    gap: .5em;
+
+                    button {
+                        position: relative;
+                        display: flex;
+                        visibility: hidden;
+                        width: fit-content;
+                        height: fit-content;
+                        border: none;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: transparent;
+                        border-radius: 5px;
+                        padding: .5em;
+                        opacity: 0;
+                        transition: all .2s ease-in-out;
+
+                        &.delete {
+                            background-color: #c70000 !important;
+                        }
+
+                        &.edit {
+                            background-color: #0094f6 !important;
+                        }
+
+                        svg {
+                            font-size: 20pt;
+                        }
+
+                        &:hover{
+                            opacity: 1;
+                        }
+                    }
+                }
+
             }
         }
     }
