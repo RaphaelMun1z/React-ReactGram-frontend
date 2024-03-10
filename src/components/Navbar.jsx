@@ -18,6 +18,8 @@ const Navbar = () => {
     const { auth } = useAuth()
     const { user } = useSelector((state) => state.auth)
 
+    const [query, setQuery] = useState("")
+
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -29,6 +31,14 @@ const Navbar = () => {
         navigate("/login")
     }
 
+    const handleSearch = (e) => {
+        e.preventDefault()
+
+        if (query) {
+            return navigate(`/search?q=${query}`)
+        }
+    }
+
     return (
         <nav>
             <div className={styles.logo}>
@@ -37,8 +47,8 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className={styles.navbar}>
-                <form>
-                    <input type="text" placeholder='Pesquisar'/>
+                <form onSubmit={handleSearch}>
+                    <input type="text" placeholder='Pesquisar' onChange={(e) => setQuery(e.target.value)} />
                     <button type='submit'>
                         <RiSearch2Line />
                     </button>

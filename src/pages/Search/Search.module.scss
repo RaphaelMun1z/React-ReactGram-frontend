@@ -1,0 +1,34 @@
+.pageContainer {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+
+    section {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        width: 700px;
+        height: fit-content;
+        justify-content: center;
+        gap: 1em;
+
+        h2 {
+            text-align: left;
+            width: 100%;
+            font-size: 15pt;
+            font-weight: 400;
+            color: #999;
+
+            span {
+                font-weight: 600;
+                color: #999;
+            }
+        }
+    }
+}
