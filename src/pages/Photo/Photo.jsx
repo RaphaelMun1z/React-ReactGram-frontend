@@ -28,6 +28,7 @@ const Photo = () => {
     const { photo, loading, error, message } = useSelector((state) => state.photo)
 
     const [commentText, setCommentText] = useState("")
+    const [isAnimatingPost, setIsAnimatingPost] = useState(false);
 
     // Load photo data
     useEffect(() => {
@@ -37,6 +38,12 @@ const Photo = () => {
     // Insert a like
     const handleLike = () => {
         dispatch(like(photo._id))
+
+        setIsAnimatingPost(true);
+
+        setTimeout(() => {
+            setIsAnimatingPost(false);
+        }, 1000);
 
         resetMessage()
     }
@@ -64,7 +71,18 @@ const Photo = () => {
     return (
         <div className={styles.pageContainer}>
             <section>
-                <PhotoItem photo={photo} user={user} handleLike={handleLike} message={message} error={error} handleComment={handleComment} commentText={commentText} setCommentText={setCommentText} comments={true} />
+                <PhotoItem
+                    photo={photo}
+                    user={user}
+                    handleLike={handleLike}
+                    message={message}
+                    error={error}
+                    handleComment={handleComment}
+                    commentText={commentText}
+                    setCommentText={setCommentText}
+                    comments={true}
+                    isAnimatingPost={isAnimatingPost}
+                />
             </section>
         </div>
     )

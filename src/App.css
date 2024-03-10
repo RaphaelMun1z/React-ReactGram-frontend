@@ -21,6 +21,10 @@ input[type='submit'] {
     text-decoration: none;
 }
 
+section {
+    max-width: 100%;
+}
+
 .container {
     position: relative;
     display: flex;
@@ -37,4 +41,55 @@ input[type='submit'] {
 
 .hide {
     display: none !important;
+}
+
+.scroll-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: #000;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.activeMobile {
+    display: flex;
+}
+
+.navbar-mobile {
+    position: fixed !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100vh !important;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    background-color: #000;
+    top: 0;
+    left: 0;
+    z-index: 999;
+
+    form {
+        margin: auto !important;
+    }
+
+    .navbar-mobile-container {
+        height: 80% !important;
+        width: 80% !important;
+        flex-wrap: wrap !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 1em 1em !important;
+        margin: auto !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1em !important;
+    }
+
 }

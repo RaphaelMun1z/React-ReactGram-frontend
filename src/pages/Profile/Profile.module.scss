@@ -46,7 +46,7 @@
                 width: fit-content;
                 height: 300px;
                 flex: 1 1 70%;
-                padding: 2em;
+                padding: 4em 2em;
 
                 .insideDescription {
                     position: relative;
@@ -58,11 +58,12 @@
                     gap: 1em;
 
                     .name {
-                        font-size: 20pt;
+                        font-size: 30pt;
                     }
 
                     .bio {
                         font-size: 12pt;
+                        font-weight: 300;
                     }
                 }
             }
@@ -75,6 +76,7 @@
                 border-radius: 50%;
                 width: 200px;
                 height: 200px;
+                border: 1px solid #222;
             }
         }
 
@@ -154,6 +156,24 @@
                             background-color: #000;
                         }
                     }
+
+                    .btnCancelPost {
+                        background-color: #0094f6;
+                        color: #fff;
+                        font-size: 14pt;
+                        font-weight: 600;
+                        padding: 0.5em;
+                        background-color: #c70000 !important;
+                        position: relative;
+                        display: flex;
+                        width: 100%;
+                        height: fit-content;
+                        border: 1px solid #555;
+                        border-radius: 5px;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                    }
                 }
             }
         }
@@ -164,6 +184,31 @@
             width: 100%;
             height: fit-content;
             gap: 0;
+
+            .newPostContainer {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                width: 300px;
+                height: 300px;
+                flex: 0 1 300px;
+                overflow: hidden;
+                gap: 5px;
+                background-color: #363636;
+                border: none;
+                border-right: 2.5px solid #121212;
+                border-left: 2.5px solid #121212;
+                border-top: 2.5px solid #121212;
+                border-bottom: 2.5px solid #121212;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+
+                svg {
+                    font-size: 40pt;
+                }
+            }
+
 
             .photo {
                 position: relative;
@@ -244,26 +289,32 @@
         .editPhoto {
             position: fixed;
             display: flex;
-            width: 50%;
-            height: fit-content;
+            width: 100%;
+            height: 100%;
             gap: 0;
             z-index: 11;
-            background: #222;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .7);
+            justify-content: center;
+            align-items: center;
 
             .editPhotoInside {
                 position: relative;
                 display: flex;
                 flex-wrap: wrap;
                 flex-direction: column;
-                width: 100%;
+                width: fit-content;
                 height: fit-content;
+                background: #222;
+                border: 1px solid #363636;
+                border-radius: 5px;
+                padding: 2em 3em;
 
                 .editImage {
                     position: relative;
                     display: flex;
+                    flex-direction: column;
                     width: 500px;
                     height: 500px;
                     object-fit: cover;
@@ -282,6 +333,7 @@
                     position: relative;
                     display: flex;
                     flex-wrap: wrap;
+                    flex-direction: column;
                     width: 100%;
                     height: fit-content;
                     margin: 1em 0;
@@ -354,4 +406,42 @@
             }
         }
     }
+}
+
+@media (max-width: 768px) {
+    section {
+        .descriptionContainer {
+            height: fit-content !important;
+            padding: 2em !important;
+
+            .insideDescription {
+                width: 100% !important;
+                justify-content: center !important;
+                align-items: center !important;
+
+                .name {
+                    display: flex !important;
+                    text-align: center !important;
+                    justify-content: center !important;
+                }
+            }
+        }
+
+        .editPhoto {
+            max-height: 80% !important;
+        }
+
+        .editImage {
+            max-width: 100% !important;
+            height: 50% !important;
+        }
+
+        .actions {
+            button {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        }
+    }
+
 }

@@ -2,7 +2,7 @@ import styles from './LikeContainer.module.scss'
 
 import { FaRegHeart, FaHeart, FaRegCommentAlt } from "react-icons/fa";
 
-const LikeContainer = ({ photo, user, handleLike }) => {
+const LikeContainer = ({ photo, user, handleLike, handleToggleComments }) => {
     return (
         <div className={styles.actions}>
             {photo.likes && user && (
@@ -18,6 +18,10 @@ const LikeContainer = ({ photo, user, handleLike }) => {
                             <p>{photo.likes.length}</p>
                         </div>
                     )}
+                    <div className={styles.btn} onClick={handleToggleComments}>
+                        <FaRegCommentAlt />
+                        <p>{photo.comments.length}</p>
+                    </div>
                 </>
             )}
         </div>

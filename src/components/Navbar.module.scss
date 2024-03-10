@@ -1,12 +1,14 @@
 nav {
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     height: fit-content;
     border-bottom: 1px solid #7d7d7d;
     justify-content: space-between;
     align-items: center;
     padding: .7em 5em;
+    row-gap: 1em;
 
     .logo {
         position: relative;
@@ -23,6 +25,46 @@ nav {
         }
     }
 
+    .menuMobile {
+        position: relative;
+        display: flex;
+        width: fit-content;
+        height: fit-content;
+
+        button {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 15pt;
+            border: 1px solid #222;
+            color: #fff;
+            padding: .5em 1em;
+            border-radius: 5px;
+            text-decoration: none;
+            gap: 5px;
+            cursor: pointer;
+            background-color: transparent;
+
+            svg {
+                font-size: 20pt;
+            }
+
+            &.activeMobile {
+                display: flex;
+            }
+        }
+    }
+
+    .divMobileNav {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        width: fit-content;
+        height: fit-content;
+        gap: 1em;
+    }
+
     .navbar {
         position: relative;
         display: flex;
@@ -31,6 +73,15 @@ nav {
         height: fit-content;
         align-items: center;
         gap: 1em;
+
+        .navMobile {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            width: fit-content;
+            height: fit-content;
+            gap: 1em;
+        }
 
         form {
             position: relative;
@@ -128,5 +179,30 @@ nav {
                 }
             }
         }
+    }
+}
+
+@media (max-width: 1200px) {
+    nav {
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        display: none !important;
+    }
+
+    .divMobileNav {
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .menuMobile {
+        margin-left: auto !important;
+    }
+
+    .divMobileNav {
+        justify-content: center;
+        align-items: center;
     }
 }
