@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom'
 
 // Redux
 import { getUserDetails } from '../../slices/userSlice'
-import { publishPhoto, resetMessage, getUserPhotos } from '../../slices/photoSlice'
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from '../../slices/photoSlice'
 
 import { RiDeleteBin2Line, RiEditLine } from "react-icons/ri";
 
@@ -29,6 +29,10 @@ const Profile = () => {
     const [title, setTitle] = useState("")
     const [image, setImage] = useState("")
 
+    const [editId, setEditId] = useState("")
+    const [editImage, setEditImage] = useState("")
+    const [editTitle, setEditTitle] = useState("")
+
     // New form and edit form refs
     const newPhotoForm = useRef()
     const editPhotoForm = useRef()
@@ -43,6 +47,12 @@ const Profile = () => {
         const image = e.target.files[0]
 
         setImage(image)
+    }
+
+    const resetComponentMessage = () => {
+        setTimeout(() => {
+            dispatch(resetMessage())
+        }, 2000)
     }
 
     const submitHandle = (e) => {
@@ -64,9 +74,49 @@ const Profile = () => {
 
         setTitle("")
 
-        setTimeout(() => {
-            dispatch(resetMessage())
-        }, 2000)
+        resetComponentMessage()
+    }
+
+    // Delete a photo
+    const handleDelete = (id) => {
+        dispatch(deletePhoto(id))
+
+        resetComponentMessage()
+    }
+
+    // Show or hide forms
+    const hideOrShowForms = () => {
+        newPhotoForm.current.classList.toggle("hide")
+        editPhotoForm.current.classList.toggle("hide")
+    }
+
+    // Update a photo
+    const handleUpdate = (e) => {
+        e.preventDefault()
+
+        const photoData = {
+            title: editTitle,
+            id: editId
+        }
+
+        dispatch(updatePhoto(photoData))
+
+        resetComponentMessage()
+    }
+
+    // Open edit form
+    const handleEdit = (photo) => {
+        if (editPhotoForm.current.classList.contains("hide")) {
+            hideOrShowForms()
+        }
+
+        setEditId(photo._id)
+        setEditTitle(photo.title)
+        setEditImage(photo.image)
+    }
+
+    const handleCancelEdit = () => {
+        hideOrShowForms()
     }
 
     if (loading) {
@@ -91,8 +141,8 @@ const Profile = () => {
                 </div>
 
                 {id === userAuth._id && (
-                    <div className={styles.container}>
-                        <div className={styles.newPhoto} ref={newPhotoForm}>
+                    <div className={styles.container} ref={newPhotoForm}>
+                        <div className={styles.newPhoto}>
                             <h3>Compartilhe algum momento seu:</h3>
                             <form onSubmit={submitHandle}>
                                 <label>
@@ -111,6 +161,24 @@ const Profile = () => {
                         </div>
                     </div>
                 )}
+
+                <div className={`${styles.container} ${styles.editPhoto} hide`} ref={editPhotoForm}>
+                    <div className={styles.editPhotoInside}>
+                        <p>Editando:</p>
+                        {editImage && (
+                            <img src={`${uploads}/photos/${editImage}`} alt={editTitle} className={styles.editImage} />
+                        )}
+                        <form onSubmit={handleUpdate}>
+                            <span>Título para a foto:</span>
+                            <input type="text" onChange={(e) => setEditTitle(e.target.value)} value={editTitle || ""} />
+                            <input type="submit" value="Salvar" className={styles.btnSubmit} />
+                            <button className={styles.btnEditCancel} onClick={handleCancelEdit}>Cancelar</button>
+                            {errorPhoto && <Message msg={errorPhoto} type="error" />}
+                            {messagePhoto && <Message msg={messagePhoto} type="success" />}
+                        </form>
+                    </div>
+                </div>
+
                 <div className={`${styles.container} ${styles.userPhotos}`}>
                     {photos && photos.map((photo) => (
                         <div className={styles.photo} key={photo._id}>
@@ -122,12 +190,14 @@ const Profile = () => {
 
                             {photo.image && id === userAuth._id && (
                                 <>
-                                    <img src={`${uploads}/photos/${photo.image}`} alt={photo.title} />
+                                    <Link to={`/photos/${photo._id}`}>
+                                        <img src={`${uploads}/photos/${photo.image}`} alt={photo.title} />
+                                    </Link>
                                     <div className={styles.actions}>
-                                        <button className={styles.delete}>
+                                        <button className={styles.delete} onClick={() => handleDelete(photo._id)}>
                                             <RiDeleteBin2Line />
                                         </button>
-                                        <button className={styles.edit}>
+                                        <button className={styles.edit} onClick={() => handleEdit(photo)}>
                                             <RiEditLine />
                                         </button>
                                     </div>

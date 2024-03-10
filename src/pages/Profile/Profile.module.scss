@@ -232,12 +232,125 @@
                             font-size: 20pt;
                         }
 
-                        &:hover{
+                        &:hover {
                             opacity: 1;
                         }
                     }
                 }
 
+            }
+        }
+
+        .editPhoto {
+            position: fixed;
+            display: flex;
+            width: 50%;
+            height: fit-content;
+            gap: 0;
+            z-index: 11;
+            background: #222;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            .editPhotoInside {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: column;
+                width: 100%;
+                height: fit-content;
+
+                .editImage {
+                    position: relative;
+                    display: flex;
+                    width: 500px;
+                    height: 500px;
+                    object-fit: cover;
+                    border-radius: 5px;
+                }
+
+                p {
+                    font-size: 15pt;
+                    text-align: left;
+                    font-weight: 400;
+                    color: #999;
+                    margin-bottom: .5em;
+                }
+
+                form {
+                    position: relative;
+                    display: flex;
+                    flex-wrap: wrap;
+                    width: 100%;
+                    height: fit-content;
+                    margin: 1em 0;
+                    gap: .5em;
+
+                    label {
+                        position: relative;
+                        display: flex;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        height: fit-content;
+                        gap: 2px;
+
+                        span {
+                            font-size: 12pt;
+                        }
+                    }
+
+                    input {
+                        position: relative;
+                        display: flex;
+                        width: 100%;
+                        height: fit-content;
+                        border: 1px solid #555;
+                        border-radius: 5px;
+                        background-color: #3b3b3b;
+                        padding: .8em 1em;
+                        font-size: 12pt;
+                        color: #fff;
+                    }
+
+                    input::placeholder {
+                        color: #aaa;
+                    }
+
+                    .btnEditCancel {
+                        position: relative;
+                        display: flex;
+                        width: 100%;
+                        height: fit-content;
+                        border: 1px solid #555;
+                        border-radius: 5px;
+                        background-color: #c70000;
+                        color: #fff;
+                        font-size: 14pt;
+                        font-weight: 600;
+                        padding: .5em;
+                        text-align: center;
+                        justify-content: center;
+                        align-items: center;
+
+                        &:disabled {
+                            background-color: #000;
+                        }
+                    }
+
+                    .btnSubmit {
+                        background-color: #0094f6;
+                        color: #fff;
+                        font-size: 14pt;
+                        font-weight: 600;
+                        padding: .5em;
+                        margin-top: .5em;
+
+                        &:disabled {
+                            background-color: #000;
+                        }
+                    }
+                }
             }
         }
     }

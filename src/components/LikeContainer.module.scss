@@ -1,0 +1,35 @@
+.actions {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    padding: .8em 0;
+    gap: 1em;
+
+    .btn {
+        position: relative;
+        display: flex;
+        width: fit-content;
+        height: fit-content;
+        cursor: pointer;
+        align-items: center;
+        gap: 7px;
+
+        &.liked {
+            svg {
+                fill: red !important;
+                transition: all .2s ease-in-out;
+            }
+        }
+
+        p {
+            font-size: 12pt;
+            color: #fff;
+        }
+
+        svg {
+            font-size: 24px;
+            transition: all .2s ease-in-out;
+        }
+    }
+}
