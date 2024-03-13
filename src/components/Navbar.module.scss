@@ -9,6 +9,7 @@ nav {
     align-items: center;
     padding: .7em 5em;
     row-gap: 1em;
+    z-index: 998 !important;
 
     .logo {
         position: relative;
@@ -17,6 +18,22 @@ nav {
         height: 50px;
         justify-content: center;
         align-items: center;
+
+        button {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 15pt;
+            border: 1px solid #222;
+            color: #fff;
+            padding: .5em 1em;
+            border-radius: 5px;
+            text-decoration: none;
+            gap: 5px;
+            cursor: pointer;
+            background-color: transparent;
+        }
 
         a {
             text-decoration: none;
@@ -187,7 +204,6 @@ nav {
         justify-content: space-between;
         align-items: center;
         flex-direction: column;
-        display: none !important;
     }
 
     .divMobileNav {
@@ -197,6 +213,19 @@ nav {
 }
 
 @media (max-width: 768px) {
+    nav {
+        padding: 0.7em 1em !important;
+    }
+
+    .logo {
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    .navbar {
+        display: none !important;
+    }
+
     .menuMobile {
         margin-left: auto !important;
     }
@@ -204,5 +233,9 @@ nav {
     .divMobileNav {
         justify-content: center;
         align-items: center;
+    }
+
+    .activeNavbar {
+        display: flex !important;
     }
 }

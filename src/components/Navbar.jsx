@@ -6,6 +6,7 @@ import { NavLink, Link } from 'react-router-dom'
 // Icons
 import { RiHome2Line, RiLoginBoxLine, RiUserAddLine, RiLogoutBoxLine, RiSearch2Line, RiUser6Line, RiSettings4Line } from "react-icons/ri";
 import { FaBars } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 // Hooks
 import { useState, useRef, useEffect } from 'react';
@@ -29,6 +30,8 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(logout())
         dispatch(reset())
+
+        setOpenNavbarVisible(!openNavbarVisible)
 
         navigate("/login")
     }
@@ -64,6 +67,7 @@ const Navbar = () => {
     }, [height]);
 
     // Navbar on mobile
+    const [openNavbarVisible, setOpenNavbarVisible] = useState(false)
     const [menuBtnIsVisible, setMenuBtnIsVisible] = useState(false)
 
     const navbarMobile = useRef()
@@ -93,7 +97,11 @@ const Navbar = () => {
 
     useEffect(() => {
         checkWindowWidth();
-    }, [])
+    }, [openNavbarVisible])
+
+    const handleToggleNavbar = () => {
+        setOpenNavbarVisible(!openNavbarVisible)
+    }
 
     return (
         <nav ref={navbar}>
@@ -101,14 +109,19 @@ const Navbar = () => {
                 <Link to="/">
                     <span className='siteName'>ReactGram</span>
                 </Link>
+                {menuBtnIsVisible && (
+                    <button onClick={handleToggleNavbar}>
+                        <FaBars />
+                    </button>
+                )}
             </div>
 
-            <div className={styles.navbar} ref={navbarMobile}>
+            <div className={`${styles.navbar} ${openNavbarVisible ? styles.activeNavbar : ''}`} ref={navbarMobile}>
                 <div className={styles.navMobile} ref={navbarMobileContainer}>
                     {menuBtnIsVisible && (
                         <div className={styles.menuMobile}>
-                            <button>
-                                <FaBars />
+                            <button onClick={handleToggleNavbar}>
+                                <IoClose />
                             </button>
                         </div>
                     )}
@@ -123,24 +136,24 @@ const Navbar = () => {
                             {auth ? (
                                 <>
                                     <li>
-                                        <Link to="/">
+                                        <Link to="/" onClick={handleToggleNavbar}>
                                             <RiHome2Line />
                                         </Link>
                                     </li>
                                     {user && (
                                         <li>
-                                            <NavLink to={`/users/${user._id}`}>
+                                            <NavLink to={`/users/${user._id}`} onClick={handleToggleNavbar}>
                                                 <RiUser6Line />
                                             </NavLink>
                                         </li>
                                     )}
                                     <li>
-                                        <NavLink to={"/profile"}>
+                                        <NavLink to={"/profile"} onClick={handleToggleNavbar}>
                                             <RiSettings4Line />
                                         </NavLink>
                                     </li>
                                     <li>
-                                        <span onClick={handleLogout} className={styles.logout}>
+                                        <span onClick={handleLogout} className={styles.logout} >
                                             <RiLogoutBoxLine />
                                         </span>
                                     </li>
@@ -148,12 +161,12 @@ const Navbar = () => {
                             ) : (
                                 <>
                                     <li>
-                                        <Link to="/Login">
+                                        <Link to="/Login" onClick={handleToggleNavbar}>
                                             <RiLoginBoxLine />
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="/Register" className={styles.register}>
+                                        <Link to="/Register" className={styles.register} onClick={handleToggleNavbar}>
                                             <RiUserAddLine />
                                             <p>Criar conta</p>
                                         </Link>
@@ -164,7 +177,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav >
     )
 }
 

@@ -181,10 +181,11 @@ const Profile = () => {
                 </div>
 
                 <div className={`${styles.container} ${styles.userPhotos}`}>
-
-                    <div className={styles.newPostContainer} onClick={handleNewPost} ref={newPhotoButton}>
-                        <VscDiffAdded />
-                    </div>
+                    {id === userAuth._id && (
+                        <div className={styles.newPostContainer} onClick={handleNewPost} ref={newPhotoButton}>
+                            <VscDiffAdded />
+                        </div>
+                    )}
 
                     {photos && photos.map((photo) => (
                         <div className={styles.photo} key={photo._id}>
