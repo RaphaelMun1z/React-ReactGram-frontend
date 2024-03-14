@@ -4,7 +4,7 @@ import { uploads } from '../../utils/config'
 
 // Components
 import Message from '../../components/Message'
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
 // Hooks
 import { useState, useEffect, useRef } from 'react'
@@ -12,10 +12,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 // Redux
-import { getUserDetails } from '../../slices/userSlice'
+import { follow, getUserDetails, unfollow } from '../../slices/userSlice'
 import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from '../../slices/photoSlice'
 
-import { RiDeleteBin2Line, RiEditLine } from "react-icons/ri";
+import { RiDeleteBin2Line, RiEditLine, RiSettings4Line, RiAlertLine, RiUserFollowLine, RiUserFollowFill } from "react-icons/ri";
 import { VscDiffAdded } from "react-icons/vsc";
 
 const Profile = () => {
@@ -117,6 +117,18 @@ const Profile = () => {
         newPhotoButton.current.classList.toggle("hide")
     }
 
+    const handleFollow = () => {
+        dispatch(follow(user._id))
+
+        resetMessage()
+    }
+
+    const handleUnfollow = () => {
+        dispatch(unfollow(user._id))
+
+        resetMessage()
+    }
+
     if (loading) {
         return <p>Carregando...</p>
     }
@@ -134,34 +146,88 @@ const Profile = () => {
                     </div>
                     <div className={styles.descriptionContainer}>
                         <div className={styles.insideDescription}>
-                            <h1 className={styles.name}>{user.name}</h1>
+
+                            <div className={styles.usernameContainer}>
+                                <h1 className={styles.name}>{user.name}</h1>
+                                <div className={styles.actions}>
+                                    {id === userAuth._id ? (
+                                        <>
+                                            <NavLink to={"/profile"}>
+                                                <RiSettings4Line />
+                                            </NavLink>
+                                        </>
+                                    ) : (
+                                        <>
+
+                                            {user && user.followers && (
+                                                <>
+                                                    {user.followers.includes(userAuth._id) ? (
+                                                        <button className={styles.following} onClick={handleUnfollow}>
+                                                            <p>Seguindo</p>
+                                                            <RiUserFollowFill />
+                                                        </button>
+                                                    ) : (
+                                                        <button className={styles.follow} onClick={handleFollow}>
+                                                            <p>Seguir</p>
+                                                            <RiUserFollowLine />
+                                                        </button>
+                                                    )}
+                                                </>
+                                            )}
+                                            <button className={styles.report}>
+                                                <RiAlertLine />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={styles.socialContainer}>
+                                <div className={styles.btnSocial}>
+                                    <p><span>{photos.length}</span> Publicações</p>
+                                </div>
+                                <div className={styles.btnSocial}>
+                                    {user && user.following && (
+                                        <p><span>{user.followers.length}</span> Seguidores</p>
+                                    )}
+                                </div>
+                                <div className={styles.btnSocial}>
+                                    {user && user.following && (
+                                        <p><span>{user.following.length}</span> Seguindo</p>
+                                    )}
+                                </div>
+                            </div>
+
                             <p className={styles.bio}>{user.bio}</p>
+
                         </div>
                     </div>
                 </div>
 
-                {id === userAuth._id && (
-                    <div className={`${styles.container} hide`} ref={newPhotoForm}>
-                        <div className={styles.newPhoto}>
-                            <h3>Compartilhe algum momento seu:</h3>
-                            <form onSubmit={submitHandle}>
-                                <label>
-                                    <span>Título para a foto:</span>
-                                    <input type="text" placeholder='Insira um título' onChange={(e) => setTitle(e.target.value)} value={title || ""} />
-                                </label>
-                                <label>
-                                    <span>Imagem:</span>
-                                    <input type="file" onChange={handleFile} />
-                                </label>
-                                {!loadingPhoto && <input type="submit" value="Publicar" className={styles.btnSubmit} />}
-                                {loadingPhoto && <input type="submit" value="Aguarde..." disabled className={styles.btnSubmit} />}
-                                <button type='button' className={styles.btnCancelPost} onClick={handleNewPost}>Cancelar</button>
-                                {errorPhoto && <Message msg={errorPhoto} type="error" />}
-                                {messagePhoto && <Message msg={messagePhoto} type="success" />}
-                            </form>
+                {
+                    id === userAuth._id && (
+                        <div className={`${styles.container} hide`} ref={newPhotoForm}>
+                            <div className={styles.newPhoto}>
+                                <h3>Compartilhe algum momento seu:</h3>
+                                <form onSubmit={submitHandle}>
+                                    <label>
+                                        <span>Título para a foto:</span>
+                                        <input type="text" placeholder='Insira um título' onChange={(e) => setTitle(e.target.value)} value={title || ""} />
+                                    </label>
+                                    <label>
+                                        <span>Imagem:</span>
+                                        <input type="file" onChange={handleFile} />
+                                    </label>
+                                    {!loadingPhoto && <input type="submit" value="Publicar" className={styles.btnSubmit} />}
+                                    {loadingPhoto && <input type="submit" value="Aguarde..." disabled className={styles.btnSubmit} />}
+                                    <button type='button' className={styles.btnCancelPost} onClick={handleNewPost}>Cancelar</button>
+                                    {errorPhoto && <Message msg={errorPhoto} type="error" />}
+                                    {messagePhoto && <Message msg={messagePhoto} type="success" />}
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
                 <div className={`${styles.container} ${styles.editPhoto} hide`} ref={editPhotoForm}>
                     <div className={styles.editPhotoInside}>

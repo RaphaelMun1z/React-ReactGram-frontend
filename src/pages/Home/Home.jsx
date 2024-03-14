@@ -3,7 +3,7 @@ import styles from './Home.module.scss'
 // Components
 import LikeContainer from '../../components/LikeContainer'
 import photoItem from '../../components/PhotoItem'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 // Hooks
 import { useEffect } from 'react'
@@ -15,6 +15,8 @@ import { getPhotos, like } from '../../slices/photoSlice'
 import PhotoItem from '../../components/PhotoItem'
 
 const Home = () => {
+    const navigate = useNavigate();
+
     const dispatch = useDispatch()
 
     const resetMessage = useResetComponentMessage(dispatch)
@@ -33,6 +35,10 @@ const Home = () => {
         resetMessage()
     }
 
+    const handleRedirect = (photo_id) => {
+        navigate(`/photos/${photo_id}`);
+    }
+
     if (loading) {
         return <p>Carregando...</p>
     }
@@ -42,9 +48,9 @@ const Home = () => {
             <section>
                 {photos && photos.map((photo) => (
                     <div key={photo._id}>
-                        <Link to={`/photos/${photo._id}`}>
+                        <div onClick={() => handleRedirect(photo._id)}>
                             <PhotoItem photo={photo} user={user} handleLike={handleLike} comments={false} />
-                        </Link>
+                        </div>
                     </div>
                 ))}
                 {photos && photos.length === 0 && (

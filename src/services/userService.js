@@ -45,10 +45,42 @@ const getUserDetails = async (id) => {
     }
 }
 
+// Follow somebody
+const follow = async (followedUserId, token) => {
+    const config = requestConfig("PUT", followedUserId, token)
+
+    try {
+        const res = await fetch(api + "/users/follow/", config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Unfollow somebody
+const unfollow = async (unfollowedUserId, token) => {
+    const config = requestConfig("PUT", unfollowedUserId, token)
+
+    try {
+        const res = await fetch(api + "/users/unfollow/", config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const userService = {
     profile,
     updateProfile,
     getUserDetails,
+    follow,
+    unfollow,
 }
 
 export default userService

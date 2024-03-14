@@ -48,6 +48,40 @@ export const getUserDetails = createAsyncThunk(
     }
 )
 
+// Follow somebody
+export const follow = createAsyncThunk(
+    "user/follow",
+    async (followedUserId, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await userService.follow({ followedUserId }, token)
+
+        // Check for errors
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
+
+// Unfollow somebody
+export const unfollow = createAsyncThunk(
+    "user/unfollow",
+    async (unfollowedUserId, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await userService.unfollow({ unfollowedUserId }, token)
+
+        // Check for errors
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
@@ -93,6 +127,33 @@ export const userSlice = createSlice({
                 state.success = true
                 state.error = null
                 state.user = action.payload
+            })
+            .addCase(follow.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+
+                state.user.followers.push(action.payload.authUser._id)
+
+                state.message = action.payload.message
+            })
+            .addCase(follow.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
+            })
+            .addCase(unfollow.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+
+                const indexToRemove = state.user.followers.indexOf(action.payload.authUser._id);
+                state.user.followers.splice(indexToRemove, 1);
+
+                state.message = action.payload.message
+            })
+            .addCase(unfollow.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
             })
     },
 })

@@ -148,11 +148,6 @@ const Navbar = () => {
                                         </li>
                                     )}
                                     <li>
-                                        <NavLink to={"/profile"} onClick={handleToggleNavbar}>
-                                            <RiSettings4Line />
-                                        </NavLink>
-                                    </li>
-                                    <li>
                                         <span onClick={handleLogout} className={styles.logout} >
                                             <RiLogoutBoxLine />
                                         </span>

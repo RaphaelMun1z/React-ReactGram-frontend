@@ -38,7 +38,7 @@ const PhotoItem = ({ photo, user, handleLike, message, error, handleComment, com
         <div className={styles.photoImage}>
             <div className={styles.header}>
                 <div className={styles.userDetails}>
-                    {user.profileImage && (
+                    {photo.userProfileImage && (
                         <img src={`${uploads}/users/${photo.userProfileImage}`} alt={user.name} />
                     )}
                     <h3><Link to={`/users/${photo.userId}`}>{photo.userName}</Link></h3>
