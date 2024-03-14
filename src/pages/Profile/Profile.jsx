@@ -247,6 +247,10 @@ const Profile = () => {
                 </div>
 
                 <div className={`${styles.container} ${styles.userPhotos}`}>
+                    {photos.length === 0 && (
+                        <p className={styles.noPhotosYet}>Ainda não há publicações.</p>
+                    )}
+
                     {id === userAuth._id && (
                         <div className={styles.newPostContainer} onClick={handleNewPost} ref={newPhotoButton}>
                             <VscDiffAdded />
@@ -278,9 +282,6 @@ const Profile = () => {
                             )}
                         </div>
                     ))}
-                    {photos.length === 0 && (
-                        <p>Ainda não há publicações.</p>
-                    )}
                 </div>
             </section >
         </div >

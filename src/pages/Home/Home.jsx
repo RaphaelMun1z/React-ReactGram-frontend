@@ -1,9 +1,10 @@
 import styles from './Home.module.scss'
 
 // Components
-import LikeContainer from '../../components/LikeContainer'
-import photoItem from '../../components/PhotoItem'
-import { Link, useNavigate } from 'react-router-dom'
+import PhotoItem from '../../components/PhotoItem'
+import Loading from '../../components/Loading'
+
+import { useNavigate } from 'react-router-dom'
 
 // Hooks
 import { useEffect } from 'react'
@@ -12,7 +13,6 @@ import { useResetComponentMessage } from '../../hooks/useResetComponentMessage'
 
 // Redux
 import { getPhotos, like } from '../../slices/photoSlice'
-import PhotoItem from '../../components/PhotoItem'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Home = () => {
     }
 
     if (loading) {
-        return <p>Carregando...</p>
+        return <Loading />
     }
 
     return (
