@@ -94,7 +94,7 @@ const Profile = () => {
 
                     {user && user.followers && (
                         <>
-                            {user.privateProfile && user.followers.includes(userAuth._id) || !user.privateProfile || id === userAuth._id ? (
+                            {user.privateProfile && user.followers.some(followerUser => followerUser.id === userAuth._id) || !user.privateProfile || id === userAuth._id ? (
                                 <>
                                     {photos && photos.map((photo) => (
                                         <React.Fragment key={photo._id}>

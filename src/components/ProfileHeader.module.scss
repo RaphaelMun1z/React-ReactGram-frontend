@@ -139,6 +139,11 @@
                         width: fit-content;
                         font-size: 12pt;
                         font-weight: 400;
+                        cursor: pointer;
+
+                        &.posts {
+                            cursor: auto;
+                        }
 
                         span {
                             font-weight: 700;
@@ -159,6 +164,124 @@
         width: 200px;
         height: 200px;
         border: 1px solid #222;
+    }
+}
+
+.followingContainer {
+    position: fixed;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 400px;
+    height: fit-content;
+    max-height: 500px;
+    background-color: #222;
+    z-index: 20;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #3b3b3b;
+    border-radius: 5px;
+    padding: 1em 2em 2em 2em;
+    gap: 1em;
+
+    .headerFollowing {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: fit-content;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid white;
+        padding-bottom: 1em;
+
+        .close {
+            position: relative;
+            display: flex;
+            width: fit-content;
+            height: fit-content;
+            background-color: transparent;
+            border: none;
+
+            svg {
+                font-size: 20pt;
+            }
+        }
+    }
+
+    .usersContainer {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        height: fit-content;
+        gap: .5em;
+
+        .message {
+            position: relative;
+            display: flex;
+            align-items: center;
+            font-size: 12pt;
+            color: #fff;
+            font-weight: 300;
+            gap: .5em;
+            opacity: .5;
+            text-align: center;
+            margin: auto;
+
+            svg {
+                font-size: 15pt;
+                font-weight: 600;
+            }
+        }
+
+        .user {
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: fit-content;
+            border-bottom: 1px solid #999;
+            padding: 1em 1em .7em 1em;
+            justify-content: space-between;
+            align-items: center;
+
+            p {
+                font-size: 13pt;
+                color: #999;
+            }
+
+            button {
+                position: relative;
+                display: flex;
+                width: fit-content;
+                height: fit-content;
+                border-radius: 5px;
+                background-color: transparent;
+                padding: .5em;
+
+                &.unfollow {
+                    border: 1px solid rgb(248, 79, 79);
+
+                    svg {
+                        fill: rgb(248, 79, 79);
+                    }
+                }
+
+                &.visit {
+                    border: 1px solid #999;
+
+                    svg {
+                        fill: #999;
+                    }
+                }
+
+                svg {
+                    font-size: 14pt;
+                }
+            }
+        }
     }
 }
 

@@ -133,7 +133,11 @@ export const userSlice = createSlice({
                 state.success = true
                 state.error = null
 
-                state.user.followers.push(action.payload.authUser._id)
+                //state.user.followers.push(action.payload.authUser._id)
+                state.user.followers.push({
+                    id: action.payload.authUser._id,
+                    name: action.payload.authUser.name,
+                })
 
                 state.message = action.payload.message
             })
@@ -146,8 +150,11 @@ export const userSlice = createSlice({
                 state.success = true
                 state.error = null
 
-                const indexToRemove = state.user.followers.indexOf(action.payload.authUser._id);
-                state.user.followers.splice(indexToRemove, 1);
+                const indexToRemove = state.user.followers.findIndex(follower => follower.id === action.payload.authUser._id);
+
+                if (indexToRemove !== -1) {
+                    state.user.followers.splice(indexToRemove, 1);
+                }
 
                 state.message = action.payload.message
             })
