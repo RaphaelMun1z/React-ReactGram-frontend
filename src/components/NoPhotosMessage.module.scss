@@ -1,0 +1,13 @@
+.noPhotosYet {
+    width: 100%;
+    justify-content: center;
+    margin: 1em auto;
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    font-weight: 500;
+
+    svg {
+        font-size: 20pt;
+    }
+}

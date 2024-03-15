@@ -63,7 +63,7 @@ const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        height > 0 ? navbar.current.classList.add("scroll-navbar") : navbar.current.classList.remove("scroll-navbar")
+        height > 100 ? navbar.current.classList.add("scroll-navbar") : navbar.current.classList.remove("scroll-navbar")
     }, [height]);
 
     // Navbar on mobile
@@ -126,12 +126,14 @@ const Navbar = () => {
                         </div>
                     )}
                     <div className={styles.divMobileNav}>
-                        <form onSubmit={handleSearch}>
-                            <input type="text" placeholder='Pesquisar' onChange={(e) => setQuery(e.target.value)} />
-                            <button type='submit'>
-                                <RiSearch2Line />
-                            </button>
-                        </form>
+                        {auth && (
+                            <form onSubmit={handleSearch}>
+                                <input type="text" placeholder='Pesquisar' onChange={(e) => setQuery(e.target.value)} />
+                                <button type='submit'>
+                                    <RiSearch2Line />
+                                </button>
+                            </form>
+                        )}
                         <ul>
                             {auth ? (
                                 <>

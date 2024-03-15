@@ -1,0 +1,233 @@
+.header {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: fit-content;
+    border: 1px solid #363636;
+    border-radius: 5px;
+    padding: 2em 3em;
+
+    .imageContainer {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        width: fit-content;
+        height: auto;
+        flex: 1 1 30%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .descriptionContainer {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 300px;
+        flex: 1 1 70%;
+        padding: 4em 2em;
+
+        .insideDescription {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            width: 100%;
+            height: fit-content;
+            gap: 1em;
+
+            .usernameContainer {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                height: fit-content;
+                justify-content: space-between;
+
+                .actions {
+                    position: relative;
+                    display: flex;
+                    width: fit-content;
+                    height: auto;
+                    gap: 1em;
+
+                    a,
+                    button {
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 15pt;
+                        border: 1px solid #222;
+                        background-color: transparent;
+                        color: #fff;
+                        padding: 0.5em 1em;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        gap: 5px;
+                        cursor: pointer;
+
+                        svg {
+                            font-size: 18pt;
+                        }
+
+                        &.report {
+                            background-color: red;
+                        }
+
+                        &.follow {
+                            p {
+                                font-weight: 400;
+                                margin-right: .2em;
+                                color: #999;
+                            }
+
+                            svg {
+                                fill: #999;
+                            }
+                        }
+
+                        &.unfollow {
+                            background-color: #0094f6;
+
+                            p {
+                                font-weight: 400;
+                                margin-right: .2em;
+                            }
+                        }
+
+                        &.following {
+                            background-color: #0094f6;
+
+                            p {
+                                font-weight: 400;
+                                margin-right: .2em;
+                            }
+                        }
+                    }
+                }
+
+                .name {
+                    font-size: 30pt;
+                }
+            }
+
+            .bio {
+                font-size: 12pt;
+                font-weight: 300;
+            }
+
+            .socialContainer {
+                position: relative;
+                display: flex;
+                flex-wrap: nowrap;
+                width: fit-content;
+                height: fit-content;
+                gap: 1.5em;
+
+                .btnSocial {
+                    position: relative;
+                    display: flex;
+                    flex-wrap: nowrap;
+                    width: fit-content;
+                    height: fit-content;
+
+                    p {
+                        position: relative;
+                        display: flex;
+                        width: fit-content;
+                        font-size: 12pt;
+                        font-weight: 400;
+
+                        span {
+                            font-weight: 700;
+                            margin-right: .3em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    img {
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        object-fit: cover;
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        border: 1px solid #222;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        .header {
+            padding: 2em 1em !important;
+
+            .descriptionContainer {
+                height: fit-content !important;
+                padding: 0em !important;
+
+                .insideDescription {
+                    width: 100% !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+
+                    .usernameContainer {
+                        flex-direction: column !important;
+                        align-items: center !important;
+
+                        .actions {
+                            margin-top: .5em;
+
+                            a {
+                                padding: 1em !important;
+                            }
+                        }
+
+                        .name {
+                            display: flex !important;
+                            text-align: center !important;
+                            justify-content: center !important;
+                            margin: .2em 0 !important;
+                        }
+                    }
+
+                    .socialContainer {
+                        margin: 1em 0 .5em 0 !important;
+
+                        .btnSocial {
+                            p {
+                                flex-wrap: wrap !important;
+                                flex-direction: column !important;
+                                justify-content: center !important;
+                                align-items: center !important;
+                            }
+
+                            &.middleBtnSocial {
+                                border: 1px solid #222;
+                                border-top: none;
+                                border-bottom: none;
+                                padding: 0 1em;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .btnSocial {
+        &.middleBtnSocial {
+            border: 1px solid #222 !important;
+            border-top: none !important;
+            border-bottom: none !important;
+            padding: 0 1em !important;
+        }
+    }
+}

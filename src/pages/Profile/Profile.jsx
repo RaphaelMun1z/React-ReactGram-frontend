@@ -1,10 +1,16 @@
+import React from 'react'
 import styles from './Profile.module.scss'
 
-import { uploads } from '../../utils/config'
-
 // Components
-import Message from '../../components/Message'
-import { NavLink, Link } from 'react-router-dom'
+import EditPostForm from '../../components/EditPostForm'
+import NewPostForm from '../../components/NewPostForm'
+import ProfileHeader from '../../components/ProfileHeader'
+import PostCardInProfile from '../../components/PostCardInProfile'
+import NewPostCard from '../../components/NewPostCard'
+import PrivateProfileMessage from '../../components/PrivateProfileMessage'
+import NoPhotosMessage from '../../components/NoPhotosMessage'
+
+import Loading from '../../components/Loading'
 
 // Hooks
 import { useState, useEffect, useRef } from 'react'
@@ -12,11 +18,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 // Redux
-import { follow, getUserDetails, unfollow } from '../../slices/userSlice'
-import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from '../../slices/photoSlice'
-
-import { RiDeleteBin2Line, RiEditLine, RiSettings4Line, RiAlertLine, RiUserFollowLine, RiUserFollowFill } from "react-icons/ri";
-import { VscDiffAdded } from "react-icons/vsc";
+import { getUserDetails } from '../../slices/userSlice'
+import { getUserPhotos } from '../../slices/photoSlice'
 
 const Profile = () => {
     const { id } = useParams()
@@ -25,11 +28,13 @@ const Profile = () => {
 
     const { user, loading } = useSelector((state) => state.user)
     const { user: userAuth } = useSelector((state) => state.auth)
-    const { photos, loading: loadingPhoto, message: messagePhoto, error: errorPhoto } = useSelector((state) => state.photo)
+    const { photos } = useSelector((state) => state.photo)
 
+    // New post
     const [title, setTitle] = useState("")
     const [image, setImage] = useState("")
 
+    // Edit form data
     const [editId, setEditId] = useState("")
     const [editImage, setEditImage] = useState("")
     const [editTitle, setEditTitle] = useState("")
@@ -45,243 +50,86 @@ const Profile = () => {
         dispatch(getUserPhotos(id))
     }, [dispatch, id])
 
-    const handleFile = (e) => {
-        const image = e.target.files[0]
-
-        setImage(image)
-    }
-
-    const resetComponentMessage = () => {
-        setTimeout(() => {
-            dispatch(resetMessage())
-        }, 2000)
-    }
-
-    const submitHandle = (e) => {
-        e.preventDefault()
-
-        const photoData = {
-            title,
-            image
-        }
-
-        // Build form data
-        const formData = new FormData()
-
-        const photoFormData = Object.keys(photoData).forEach((key) => formData.append(key, photoData[key]))
-
-        formData.append("photo", photoFormData)
-
-        dispatch(publishPhoto(formData))
-
-        setTitle("")
-
-        resetComponentMessage()
-    }
-
-    // Delete a photo
-    const handleDelete = (id) => {
-        dispatch(deletePhoto(id))
-
-        resetComponentMessage()
-    }
-
-    // Update a photo
-    const handleUpdate = (e) => {
-        e.preventDefault()
-
-        const photoData = {
-            title: editTitle,
-            id: editId
-        }
-
-        dispatch(updatePhoto(photoData))
-
-        resetComponentMessage()
-    }
-
-    const handleEdit = (photo) => {
-        setEditId(photo._id)
-        setEditTitle(photo.title)
-        setEditImage(photo.image)
-
-        editPhotoForm.current.classList.toggle("hide")
-    }
-
-    const handleCancelEdit = () => {
-        editPhotoForm.current.classList.toggle("hide")
-    }
-
-    const handleNewPost = () => {
-        newPhotoForm.current.classList.toggle("hide")
-        newPhotoButton.current.classList.toggle("hide")
-    }
-
-    const handleFollow = () => {
-        dispatch(follow(user._id))
-
-        resetMessage()
-    }
-
-    const handleUnfollow = () => {
-        dispatch(unfollow(user._id))
-
-        resetMessage()
-    }
-
     if (loading) {
-        return <p>Carregando...</p>
+        return <Loading />
     }
 
     return (
         <div className={styles.pageContainer}>
             <section className={styles.profile}>
-                <div className={styles.header}>
-                    <div className={styles.imageContainer}>
-                        {user.profileImage ? (
-                            <img src={`${uploads}/users/${user.profileImage}`} alt={user.name} />
-                        ) : (
-                            <img src={`${uploads}/users/noUserImageProfile.png`} alt={user.name} />
-                        )}
-                    </div>
-                    <div className={styles.descriptionContainer}>
-                        <div className={styles.insideDescription}>
+                <ProfileHeader id={id} photos={photos} />
 
-                            <div className={styles.usernameContainer}>
-                                <h1 className={styles.name}>{user.name}</h1>
-                                <div className={styles.actions}>
-                                    {id === userAuth._id ? (
-                                        <>
-                                            <NavLink to={"/profile"}>
-                                                <RiSettings4Line />
-                                            </NavLink>
-                                        </>
-                                    ) : (
-                                        <>
+                {id === userAuth._id && (
+                    <NewPostForm
+                        title={title}
+                        setTitle={setTitle}
+                        image={image}
+                        setImage={setImage}
+                        newPhotoForm={newPhotoForm}
+                        newPhotoButton={newPhotoButton}
+                    />
+                )}
 
-                                            {user && user.followers && (
-                                                <>
-                                                    {user.followers.includes(userAuth._id) ? (
-                                                        <button className={styles.following} onClick={handleUnfollow}>
-                                                            <p>Seguindo</p>
-                                                            <RiUserFollowFill />
-                                                        </button>
-                                                    ) : (
-                                                        <button className={styles.follow} onClick={handleFollow}>
-                                                            <p>Seguir</p>
-                                                            <RiUserFollowLine />
-                                                        </button>
-                                                    )}
-                                                </>
-                                            )}
-                                            <button className={styles.report}>
-                                                <RiAlertLine />
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className={styles.socialContainer}>
-                                <div className={styles.btnSocial}>
-                                    <p><span>{photos.length}</span> Publicações</p>
-                                </div>
-                                <div className={styles.btnSocial}>
-                                    {user && user.following && (
-                                        <p><span>{user.followers.length}</span> Seguidores</p>
-                                    )}
-                                </div>
-                                <div className={styles.btnSocial}>
-                                    {user && user.following && (
-                                        <p><span>{user.following.length}</span> Seguindo</p>
-                                    )}
-                                </div>
-                            </div>
-
-                            <p className={styles.bio}>{user.bio}</p>
-
-                        </div>
-                    </div>
-                </div>
-
-                {
-                    id === userAuth._id && (
-                        <div className={`${styles.container} hide`} ref={newPhotoForm}>
-                            <div className={styles.newPhoto}>
-                                <h3>Compartilhe algum momento seu:</h3>
-                                <form onSubmit={submitHandle}>
-                                    <label>
-                                        <span>Título para a foto:</span>
-                                        <input type="text" placeholder='Insira um título' onChange={(e) => setTitle(e.target.value)} value={title || ""} />
-                                    </label>
-                                    <label>
-                                        <span>Imagem:</span>
-                                        <input type="file" onChange={handleFile} />
-                                    </label>
-                                    {!loadingPhoto && <input type="submit" value="Publicar" className={styles.btnSubmit} />}
-                                    {loadingPhoto && <input type="submit" value="Aguarde..." disabled className={styles.btnSubmit} />}
-                                    <button type='button' className={styles.btnCancelPost} onClick={handleNewPost}>Cancelar</button>
-                                    {errorPhoto && <Message msg={errorPhoto} type="error" />}
-                                    {messagePhoto && <Message msg={messagePhoto} type="success" />}
-                                </form>
-                            </div>
-                        </div>
-                    )
-                }
-
-                <div className={`${styles.container} ${styles.editPhoto} hide`} ref={editPhotoForm}>
-                    <div className={styles.editPhotoInside}>
-                        <p>Editando:</p>
-                        {editImage && (
-                            <img src={`${uploads}/photos/${editImage}`} alt={editTitle} className={styles.editImage} />
-                        )}
-                        <form onSubmit={handleUpdate}>
-                            <span>Título para a foto:</span>
-                            <input type="text" onChange={(e) => setEditTitle(e.target.value)} value={editTitle || ""} />
-                            <input type="submit" value="Salvar" className={styles.btnSubmit} />
-                            <button type='button' className={styles.btnEditCancel} onClick={handleCancelEdit}>Cancelar</button>
-                            {errorPhoto && <Message msg={errorPhoto} type="error" />}
-                            {messagePhoto && <Message msg={messagePhoto} type="success" />}
-                        </form>
-                    </div>
-                </div>
+                <EditPostForm
+                    editPhotoForm={editPhotoForm}
+                    editId={editId}
+                    setEditId={setEditId}
+                    editImage={editImage}
+                    setEditImage={setEditImage}
+                    editTitle={editTitle}
+                    setEditTitle={setEditTitle}
+                />
 
                 <div className={`${styles.container} ${styles.userPhotos}`}>
                     {photos.length === 0 && (
-                        <p className={styles.noPhotosYet}>Ainda não há publicações.</p>
+                        <NoPhotosMessage />
                     )}
 
                     {id === userAuth._id && (
-                        <div className={styles.newPostContainer} onClick={handleNewPost} ref={newPhotoButton}>
-                            <VscDiffAdded />
-                        </div>
+                        <NewPostCard
+                            newPhotoButton={newPhotoButton}
+                            newPhotoForm={newPhotoForm}
+                        />
                     )}
 
-                    {photos && photos.map((photo) => (
-                        <div className={styles.photo} key={photo._id}>
-                            {photo.image && id !== userAuth._id && (
-                                <Link to={`/photos/${photo._id}`}>
-                                    <img src={`${uploads}/photos/${photo.image}`} alt={photo.title} />
-                                </Link>
-                            )}
-
-                            {photo.image && id === userAuth._id && (
+                    {user && user.followers && (
+                        <>
+                            {user.privateProfile && user.followers.includes(userAuth._id) || !user.privateProfile || id === userAuth._id ? (
                                 <>
-                                    <Link to={`/photos/${photo._id}`}>
-                                        <img src={`${uploads}/photos/${photo.image}`} alt={photo.title} />
-                                    </Link>
-                                    <div className={styles.actions}>
-                                        <button className={styles.delete} onClick={() => handleDelete(photo._id)}>
-                                            <RiDeleteBin2Line />
-                                        </button>
-                                        <button className={styles.edit} onClick={() => handleEdit(photo)}>
-                                            <RiEditLine />
-                                        </button>
-                                    </div>
+                                    {photos && photos.map((photo) => (
+                                        <React.Fragment key={photo._id}>
+                                            {photo.image && id !== userAuth._id && (
+                                                <PostCardInProfile
+                                                    photo={photo}
+                                                    setEditId={setEditId}
+                                                    setEditTitle={setEditTitle}
+                                                    setEditImage={setEditImage}
+                                                    editPhotoForm={editPhotoForm}
+                                                    selfProfile={false}
+                                                />
+                                            )}
+
+                                            {photo.image && id === userAuth._id && (
+                                                <>
+                                                    <PostCardInProfile
+                                                        photo={photo}
+                                                        setEditId={setEditId}
+                                                        setEditTitle={setEditTitle}
+                                                        setEditImage={setEditImage}
+                                                        editPhotoForm={editPhotoForm}
+                                                        selfProfile={true}
+                                                    />
+                                                </>
+                                            )}
+                                        </React.Fragment>
+                                    ))}
                                 </>
+                            ) : (
+                                <PrivateProfileMessage user={user} />
                             )}
-                        </div>
-                    ))}
+                        </>
+                    )}
+
                 </div>
             </section >
         </div >
