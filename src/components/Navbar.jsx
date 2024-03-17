@@ -6,9 +6,10 @@ import { uploads } from '../utils/config'
 import { NavLink, Link } from 'react-router-dom'
 
 // Icons
-import { RiHome2Line, RiLoginBoxLine, RiUserAddLine, RiLogoutBoxLine, RiSearch2Line, RiUser6Line, RiSettings4Line } from "react-icons/ri";
-import { FaBars } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
+import { RiHome2Line, RiLoginBoxLine, RiUserAddLine, RiLogoutBoxLine, RiSearch2Line, RiUser6Line, RiUserUnfollowLine, RiUserFollowLine } from "react-icons/ri";
+import { FaBars, FaRegHeart } from "react-icons/fa";
+import { IoClose, IoNotificationsSharp, IoNotificationsOutline } from "react-icons/io5";
+import { MdOutlineHandshake } from "react-icons/md";
 
 // Hooks
 import { useState, useRef, useEffect } from 'react';
@@ -18,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Redux
 import { logout, reset } from '../slices/authSlice';
-import { getUser } from '../slices/userSlice';
+import { getUser, getUserDetails, soliciteFollowResult } from '../slices/userSlice';
 
 const Navbar = () => {
     const { auth } = useAuth()
@@ -27,6 +28,7 @@ const Navbar = () => {
 
     const [query, setQuery] = useState("")
     const [searchUser, setSearchUser] = useState([])
+    const [openNotificationsBar, setOpenNotificationsBar] = useState(false)
 
     const navigate = useNavigate()
 
@@ -40,6 +42,24 @@ const Navbar = () => {
 
         navigate("/login")
     }
+
+    const handleResponseSolicitation = (id, response) => {
+        const responseData = {
+            id: id,
+            status: response,
+        }
+
+        dispatch(soliciteFollowResult(responseData))
+    }
+
+    const handleOpenNotificationBar = () => {
+        setOpenNotificationsBar(!openNotificationsBar)
+        setQuery("")
+    }
+
+    useEffect(() => {
+        if (user) dispatch(getUserDetails(user._id))
+    }, [user])
 
     const handleSearch = (e) => {
         e.preventDefault()
@@ -58,6 +78,10 @@ const Navbar = () => {
             setQuery("")
         } else {
             setQuery(query.replace("  ", " "));
+        }
+
+        if (query.trim() !== "") {
+            setOpenNotificationsBar(false)
         }
     }, [query])
 
@@ -158,7 +182,7 @@ const Navbar = () => {
                     <div className={styles.divMobileNav}>
                         {auth && (
                             <form onSubmit={handleSearch} onChange={handleSearchUser}>
-                                <input type="text" placeholder='Pesquisar' onChange={(e) => setQuery(e.target.value)} value={query} />
+                                <input type="text" placeholder='Pesquisar por perfil/foto' onChange={(e) => setQuery(e.target.value)} value={query} />
                                 <button type='submit'>
                                     <RiSearch2Line />
                                 </button>
@@ -197,11 +221,76 @@ const Navbar = () => {
                                         </Link>
                                     </li>
                                     {user && (
-                                        <li>
-                                            <NavLink to={`/users/${user._id}`} onClick={handleToggleNavbar}>
-                                                <RiUser6Line />
-                                            </NavLink>
-                                        </li>
+                                        <>
+                                            <li>
+                                                <NavLink to={`/users/${user._id}`} onClick={handleToggleNavbar}>
+                                                    <RiUser6Line />
+                                                </NavLink>
+                                            </li>
+                                            {user.notifications && user.notifications.length > 0 || user.followSolicitation && user.followSolicitation.length > 0 && (
+                                                <li>
+                                                    <span className={styles.notificationButton} onClick={handleOpenNotificationBar}>
+                                                        <IoNotificationsSharp />
+                                                    </span>
+                                                    {openNotificationsBar && (
+                                                        <div className={styles.notificationContainer}>
+                                                            {user.followSolicitation && user.followSolicitation.map((followSolicitation) => (
+                                                                <div className={styles.notification} key={followSolicitation.id}>
+                                                                    <div className={styles.insideNotification}>
+                                                                        <div className={styles.icon}>
+                                                                            <MdOutlineHandshake />
+                                                                        </div>
+                                                                        <div className={styles.actionName}>
+                                                                            <p><Link to={`/users/${followSolicitation.id}`}>{followSolicitation.name}</Link> pediu para seguir você.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className={styles.actions}>
+                                                                        <button className={styles.accept} onClick={() => handleResponseSolicitation(followSolicitation.id, true)}>
+                                                                            <RiUserFollowLine />
+                                                                            <p>Aceitar</p>
+                                                                        </button>
+                                                                        <button className={styles.reject} onClick={() => handleResponseSolicitation(followSolicitation.id, false)}>
+                                                                            <RiUserUnfollowLine />
+                                                                            <p>Rejeitar</p>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+
+                                                            {user.notifications && user.notifications.map((notification) => (
+                                                                <div className={styles.notification} key={notification.id}>
+                                                                    <div className={styles.insideNotification}>
+                                                                        <div className={styles.icon}>
+                                                                            <FaRegHeart />
+                                                                        </div>
+                                                                        <div className={styles.actionName}>
+                                                                            <p><div>Usuário</div> curtiu sua publicação</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className={styles.notPost}>
+                                                                        <img src="" alt="" />
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </li>
+                                            )}
+                                            {user.notifications && user.notifications.length === 0 && user.followSolicitation.length === 0 && (
+                                                <li>
+                                                    <span className={styles.notificationEmptyButton} >
+                                                        <IoNotificationsOutline />
+                                                    </span>
+                                                </li>
+                                            )}
+                                            {!user.notifications && !user.followSolicitation && (
+                                                <li>
+                                                    <span className={styles.notificationEmptyButton} >
+                                                        <IoNotificationsOutline />
+                                                    </span>
+                                                </li>
+                                            )}
+                                        </>
                                     )}
                                     <li>
                                         <span onClick={handleLogout} className={styles.logout} >

@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 // Redux
-import { follow, unfollow, resetMessage } from '../slices/userSlice'
+import { follow, unfollow, resetMessage, unsoliciteFollow } from '../slices/userSlice'
 
 import { RiSettings4Line, RiAlertLine, RiUserFollowLine, RiUserFollowFill, RiUserUnfollowLine } from "react-icons/ri";
 import { MdClose, MdOutlineHandshake } from "react-icons/md";
@@ -26,7 +26,13 @@ const ProfileHeader = ({ id, photos }) => {
     const [viewFollowing, setViewFollowing] = useState(false)
 
     const handleFollow = () => {
-        dispatch(follow(user._id))
+        dispatch(follow(user))
+
+        resetMessage()
+    }
+
+    const handleUnsoliciteFollow = () => {
+        dispatch(unsoliciteFollow(user))
 
         resetMessage()
     }
@@ -78,9 +84,9 @@ const ProfileHeader = ({ id, photos }) => {
                                                         <RiUserFollowFill />
                                                     </button>
                                                 ) : user.followSolicitation.some(followSolicitationUser => followSolicitationUser.id === userAuth._id) ? (
-                                                    <button className={styles.solicitate}>
+                                                    <button className={styles.solicitate} onClick={handleUnsoliciteFollow}>
                                                         <p>Pediu para seguir</p>
-                                                        <MdOutlineHandshake  />
+                                                        <MdOutlineHandshake />
                                                     </button>
                                                 ) : (
                                                     <button className={styles.follow} onClick={handleFollow}>

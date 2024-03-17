@@ -48,13 +48,47 @@ export const getUserDetails = createAsyncThunk(
     }
 )
 
+// Unsolicite Follow
+export const unsoliciteFollow = createAsyncThunk(
+    "user/unsolicitefollow",
+    async (followedUser, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await userService.unsoliciteFollow({ followedUserId: followedUser._id }, token)
+
+        // Check for errors
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
+
+// Solicite Follow Result
+export const soliciteFollowResult = createAsyncThunk(
+    "user/solicitefollowresult",
+    async (responseData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await userService.soliciteFollowResult({ statusUserResponse: responseData.status, userSolicitedId: responseData.id }, token)
+
+        // Check for errors
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
+
 // Follow somebody
 export const follow = createAsyncThunk(
     "user/follow",
-    async (followedUserId, thunkAPI) => {
+    async (followedUser, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token
 
-        const data = await userService.follow({ followedUserId }, token)
+        const data = await userService.follow({ followedUserId: followedUser._id }, token)
 
         // Check for errors
         if (data.errors) {
@@ -145,8 +179,7 @@ export const userSlice = createSlice({
                 state.success = true
                 state.error = null
 
-                //state.user.followers.push(action.payload.authUser._id)
-                state.user.followers.push({
+                state.user.followSolicitation.push({
                     id: action.payload.authUser._id,
                     name: action.payload.authUser.name,
                 })
@@ -154,6 +187,40 @@ export const userSlice = createSlice({
                 state.message = action.payload.message
             })
             .addCase(follow.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
+            })
+            .addCase(unsoliciteFollow.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+
+                const indexToRemove = state.user.followSolicitation.findIndex(followerAsk => followerAsk.id === action.payload.authUser._id);
+
+                if (indexToRemove !== -1) {
+                    state.user.followSolicitation.splice(indexToRemove, 1);
+                }
+
+                state.message = action.payload.message
+            })
+            .addCase(unsoliciteFollow.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
+            })
+            .addCase(soliciteFollowResult.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+
+                const indexToRemove = state.user.followSolicitation.findIndex(followerAsk => followerAsk.id === action.payload.rejectedUser._id);
+
+                if (indexToRemove !== -1) {
+                    state.user.followSolicitation.splice(indexToRemove, 1);
+                }
+
+                state.message = action.payload.message
+            })
+            .addCase(soliciteFollowResult.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.payload
             })

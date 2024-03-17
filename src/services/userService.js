@@ -45,12 +45,42 @@ const getUserDetails = async (id) => {
     }
 }
 
+// Solicite Follow Result
+const soliciteFollowResult = async (responseData, token) => {
+    const config = requestConfig("PUT", responseData, token)
+
+    try {
+        const res = await fetch(api + "/users/followresponse", config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // Follow somebody
 const follow = async (followedUserId, token) => {
     const config = requestConfig("PUT", followedUserId, token)
 
     try {
         const res = await fetch(api + "/users/follow/", config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Unsolicite Follow
+const unsoliciteFollow = async (followedUserId, token) => {
+    const config = requestConfig("PUT", followedUserId, token)
+
+    try {
+        const res = await fetch(api + "/users/unsolicitefollow/", config)
             .then((res) => res.json())
             .catch((err) => err)
 
@@ -94,7 +124,9 @@ const userService = {
     profile,
     updateProfile,
     getUserDetails,
+    soliciteFollowResult,
     follow,
+    unsoliciteFollow,
     unfollow,
     getUser,
 }
