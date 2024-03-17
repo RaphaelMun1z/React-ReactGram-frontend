@@ -1,5 +1,7 @@
 import styles from './Navbar.module.scss'
 
+import { uploads } from '../utils/config'
+
 // Components
 import { NavLink, Link } from 'react-router-dom'
 
@@ -16,12 +18,15 @@ import { useNavigate } from 'react-router-dom';
 
 // Redux
 import { logout, reset } from '../slices/authSlice';
+import { getUser } from '../slices/userSlice';
 
 const Navbar = () => {
     const { auth } = useAuth()
     const { user } = useSelector((state) => state.auth)
+    const { user: act, loading: loadingUsers } = useSelector((state) => state.user)
 
     const [query, setQuery] = useState("")
+    const [searchUser, setSearchUser] = useState([])
 
     const navigate = useNavigate()
 
@@ -44,6 +49,31 @@ const Navbar = () => {
         }
     }
 
+    useEffect(() => {
+        setSearchUser(act.search)
+    }, [act])
+
+    useEffect(() => {
+        if (query === " ") {
+            setQuery("")
+        } else {
+            setQuery(query.replace("  ", " "));
+        }
+    }, [query])
+
+    const handleSearchUser = (e) => {
+        e.preventDefault()
+
+        if (query.trim() !== '') {
+            dispatch(getUser(query))
+        }
+    }
+
+    const handleResetQuery = () => {
+        setQuery("")
+        dispatch(getUser(query))
+    }
+
     // Navbar scroll
     const navbar = useRef()
 
@@ -63,7 +93,7 @@ const Navbar = () => {
     }, []);
 
     useEffect(() => {
-        height > 100 ? navbar.current.classList.add("scroll-navbar") : navbar.current.classList.remove("scroll-navbar")
+        height > 173 ? navbar.current.classList.add("scroll-navbar") : navbar.current.classList.remove("scroll-navbar")
     }, [height]);
 
     // Navbar on mobile
@@ -127,11 +157,35 @@ const Navbar = () => {
                     )}
                     <div className={styles.divMobileNav}>
                         {auth && (
-                            <form onSubmit={handleSearch}>
-                                <input type="text" placeholder='Pesquisar' onChange={(e) => setQuery(e.target.value)} />
+                            <form onSubmit={handleSearch} onChange={handleSearchUser}>
+                                <input type="text" placeholder='Pesquisar' onChange={(e) => setQuery(e.target.value)} value={query} />
                                 <button type='submit'>
                                     <RiSearch2Line />
                                 </button>
+                                {query.trim() !== '' && (
+                                    <div className={styles.usersListContainer}>
+                                        {searchUser && searchUser.map((user) => (
+                                            <Link to={`/users/${user._id}`} className={styles.user} onClick={handleResetQuery} key={user._id}>
+                                                <div className={styles.imageContainer}>
+                                                    {user.profileImage ? (
+                                                        <img src={`${uploads}/users/${user.profileImage}`} alt={user.name} />
+                                                    ) : (
+                                                        <img src={`${uploads}/users/noUserImageProfile.png`} alt={user.name} />
+                                                    )}
+                                                </div>
+                                                <div className={styles.nameContainer}>
+                                                    <p>{user.name}</p>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                        {searchUser && searchUser.length === 0 && (
+                                            <p>Nenhum usuário encontrado.</p>
+                                        )}
+                                        {loadingUsers && (
+                                            <p>Carregando...</p>
+                                        )}
+                                    </div>
+                                )}
                             </form>
                         )}
                         <ul>

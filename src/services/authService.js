@@ -33,8 +33,10 @@ const login = async (data) => {
             .then((res) => res.json())
             .catch((err) => err)
 
-        if (res._id) {
+        if (res._id && /^[0-9a-fA-F]{24}$/.test(res._id)) {
             localStorage.setItem("user", JSON.stringify(res))
+        } else {
+            return { errors: ["Houve um problema interno, por favor tente novamente mais tarde!"] };
         }
 
         return res

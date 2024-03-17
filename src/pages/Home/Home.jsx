@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useResetComponentMessage } from '../../hooks/useResetComponentMessage'
 
 // Redux
-import { getPhotos, like } from '../../slices/photoSlice'
+import { getAllFollowingUsersPhotos, like } from '../../slices/photoSlice'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Home = () => {
 
     // Load all photos
     useEffect(() => {
-        dispatch(getPhotos())
+        dispatch(getAllFollowingUsersPhotos())
     }, [dispatch])
 
     // Like a photo

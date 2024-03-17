@@ -82,6 +82,18 @@ export const unfollow = createAsyncThunk(
     }
 )
 
+// Get user by name
+export const getUser = createAsyncThunk(
+    "user/search",
+    async (username, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await userService.getUser(username, token)
+
+        return data
+    }
+)
+
 export const userSlice = createSlice({
     name: "user",
     initialState,
@@ -161,6 +173,16 @@ export const userSlice = createSlice({
             .addCase(unfollow.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.payload
+            })
+            .addCase(getUser.pending, (state) => {
+                state.loading = true
+                state.error = false
+            })
+            .addCase(getUser.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+                state.user.search = action.payload
             })
     },
 })

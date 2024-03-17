@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { follow, unfollow, resetMessage } from '../slices/userSlice'
 
 import { RiSettings4Line, RiAlertLine, RiUserFollowLine, RiUserFollowFill, RiUserUnfollowLine } from "react-icons/ri";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdOutlineHandshake } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { TbUserQuestion } from "react-icons/tb";
 
@@ -76,6 +76,11 @@ const ProfileHeader = ({ id, photos }) => {
                                                     <button className={styles.following} onClick={handleUnfollow}>
                                                         <p>Seguindo</p>
                                                         <RiUserFollowFill />
+                                                    </button>
+                                                ) : user.followSolicitation.some(followSolicitationUser => followSolicitationUser.id === userAuth._id) ? (
+                                                    <button className={styles.solicitate}>
+                                                        <p>Pediu para seguir</p>
+                                                        <MdOutlineHandshake  />
                                                     </button>
                                                 ) : (
                                                     <button className={styles.follow} onClick={handleFollow}>

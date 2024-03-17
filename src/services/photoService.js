@@ -120,6 +120,21 @@ const getPhotos = async (token) => {
     }
 }
 
+// Get all following users photos
+const getAllFollowingUsersPhotos = async (token) => {
+    const config = requestConfig("GET", null, token)
+
+    try {
+        const res = await fetch(api + "/photos/following", config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // Search photo by title
 const searchPhotos = async (query, token) => {
     const config = requestConfig("GET", null, token)
@@ -145,6 +160,7 @@ const photoService = {
     comment,
     getPhotos,
     searchPhotos,
+    getAllFollowingUsersPhotos,
 }
 
 export default photoService

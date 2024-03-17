@@ -105,6 +105,20 @@
                                 margin-right: .2em;
                             }
                         }
+
+                        &.solicitate {
+                            border: 1px solid #0094f6;
+
+                            p {
+                                font-weight: 400;
+                                margin-right: .2em;
+                                color: #0094f6;
+                            }
+
+                            svg{
+                                fill: #0094f6;
+                            }
+                        }
                     }
                 }
 

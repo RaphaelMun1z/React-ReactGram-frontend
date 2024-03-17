@@ -80,6 +80,64 @@ nav {
         width: fit-content;
         height: fit-content;
         gap: 1em;
+
+        .usersListContainer {
+            position: absolute;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            width: fit-content;
+            min-width: 303px;
+            height: fit-content;
+            background-color: #3b3b3b;
+            border: 1px solid #999;
+            border-radius: 5px;
+            padding: 1em;
+            margin-top: 3.5em;
+            gap: .5em .5em;
+
+            .user {
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                height: fit-content;
+                background-color: #aaa;
+                border-radius: 5px;
+                padding: .5em;
+                gap: 1em;
+                align-items: center;
+
+                .imageContainer {
+                    position: relative;
+                    display: flex;
+                    width: fit-content;
+                    height: fit-content;
+
+                    img {
+                        position: relative;
+                        display: flex;
+                        width: 50px;
+                        height: 50px;
+                        object-fit: cover;
+                        border-radius: 5px;
+                    }
+                }
+
+                .nameContainer {
+                    position: relative;
+                    display: flex;
+                    width: fit-content;
+                    height: fit-content;
+
+                    p {
+                        font-size: 14pt;
+                        color: #222;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
     }
 
     .navbar {
