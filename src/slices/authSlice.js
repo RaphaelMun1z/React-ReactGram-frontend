@@ -43,6 +43,22 @@ export const login = createAsyncThunk("auth/login",
     }
 )
 
+// Solicite Follow Result
+export const soliciteFollowResult = createAsyncThunk(
+    "user/solicitefollowresult",
+    async (responseData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token
+
+        const data = await authService.soliciteFollowResult({ statusUserResponse: responseData.status, userSolicitedId: responseData.id }, token)
+
+        // Check for errors
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0])
+        }
+
+        return data
+    }
+)
 
 export const authSlice = createSlice({
     name: "auth",
@@ -91,6 +107,19 @@ export const authSlice = createSlice({
                 state.loading = false
                 state.error = action.payload
                 state.user = null
+            })
+            .addCase(soliciteFollowResult.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+
+                state.user.followSolicitation = state.user.followSolicitation.filter(obj => obj.id !== action.payload.rejectedUser._id);
+
+                state.message = action.payload.message
+            })
+            .addCase(soliciteFollowResult.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
             })
     },
 })

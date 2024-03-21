@@ -45,10 +45,26 @@ const login = async (data) => {
     }
 }
 
+// Solicite Follow Result
+const soliciteFollowResult = async (responseData, token) => {
+    const config = requestConfig("PUT", responseData, token)
+
+    try {
+        const res = await fetch(api + "/users/followresponse", config)
+            .then((res) => res.json())
+            .catch((err) => err)
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const authService = {
     register,
     logout,
     login,
+    soliciteFollowResult,
 }
 
 export default authService

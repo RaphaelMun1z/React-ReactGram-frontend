@@ -18,14 +18,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // Redux
-import { logout, reset } from '../slices/authSlice';
-import { getUser, getUserDetails, soliciteFollowResult } from '../slices/userSlice';
+import { logout, reset, soliciteFollowResult } from '../slices/authSlice';
+import { getUser, getUserDetails } from '../slices/userSlice';
 
 const Navbar = () => {
     const { auth } = useAuth()
     const { user } = useSelector((state) => state.auth)
-    const { user: act, loading: loadingUsers } = useSelector((state) => state.user)
+    const { user: userSearched, loading: loadingUsers } = useSelector((state) => state.user)
 
+    const [userData, setUserData] = useState([])
     const [query, setQuery] = useState("")
     const [searchUser, setSearchUser] = useState([])
     const [openNotificationsBar, setOpenNotificationsBar] = useState(false)
@@ -58,7 +59,9 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        if (user) dispatch(getUserDetails(user._id))
+        if (user) {
+            dispatch(getUserDetails(user._id))
+        }
     }, [user])
 
     const handleSearch = (e) => {
@@ -70,8 +73,14 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        setSearchUser(act.search)
-    }, [act])
+        if (userSearched) {
+            setSearchUser(userSearched.search)
+
+            if (userSearched._id === user._id) {
+                setUserData(userSearched)
+            }
+        }
+    }, [userSearched])
 
     useEffect(() => {
         if (query === " ") {
@@ -227,14 +236,14 @@ const Navbar = () => {
                                                     <RiUser6Line />
                                                 </NavLink>
                                             </li>
-                                            {user.notifications && user.notifications.length > 0 || user.followSolicitation && user.followSolicitation.length > 0 && (
+                                            {userData.notifications && userData.notifications.length > 0 || userData.followSolicitation && userData.followSolicitation.length > 0 && (
                                                 <li>
                                                     <span className={styles.notificationButton} onClick={handleOpenNotificationBar}>
                                                         <IoNotificationsSharp />
                                                     </span>
                                                     {openNotificationsBar && (
                                                         <div className={styles.notificationContainer}>
-                                                            {user.followSolicitation && user.followSolicitation.map((followSolicitation) => (
+                                                            {userData.followSolicitation && userData.followSolicitation.map((followSolicitation) => (
                                                                 <div className={styles.notification} key={followSolicitation.id}>
                                                                     <div className={styles.insideNotification}>
                                                                         <div className={styles.icon}>
@@ -257,7 +266,7 @@ const Navbar = () => {
                                                                 </div>
                                                             ))}
 
-                                                            {user.notifications && user.notifications.map((notification) => (
+                                                            {userData.notifications && userData.notifications.map((notification) => (
                                                                 <div className={styles.notification} key={notification.id}>
                                                                     <div className={styles.insideNotification}>
                                                                         <div className={styles.icon}>
@@ -276,14 +285,14 @@ const Navbar = () => {
                                                     )}
                                                 </li>
                                             )}
-                                            {user.notifications && user.notifications.length === 0 && user.followSolicitation.length === 0 && (
+                                            {userData.notifications && userData.notifications.length === 0 && userData.followSolicitation.length === 0 && (
                                                 <li>
                                                     <span className={styles.notificationEmptyButton} >
                                                         <IoNotificationsOutline />
                                                     </span>
                                                 </li>
                                             )}
-                                            {!user.notifications && !user.followSolicitation && (
+                                            {!userData.notifications && !userData.followSolicitation && (
                                                 <li>
                                                     <span className={styles.notificationEmptyButton} >
                                                         <IoNotificationsOutline />

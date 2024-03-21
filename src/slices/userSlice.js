@@ -65,23 +65,6 @@ export const unsoliciteFollow = createAsyncThunk(
     }
 )
 
-// Solicite Follow Result
-export const soliciteFollowResult = createAsyncThunk(
-    "user/solicitefollowresult",
-    async (responseData, thunkAPI) => {
-        const token = thunkAPI.getState().auth.user.token
-
-        const data = await userService.soliciteFollowResult({ statusUserResponse: responseData.status, userSolicitedId: responseData.id }, token)
-
-        // Check for errors
-        if (data.errors) {
-            return thunkAPI.rejectWithValue(data.errors[0])
-        }
-
-        return data
-    }
-)
-
 // Follow somebody
 export const follow = createAsyncThunk(
     "user/follow",
@@ -204,23 +187,6 @@ export const userSlice = createSlice({
                 state.message = action.payload.message
             })
             .addCase(unsoliciteFollow.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.payload
-            })
-            .addCase(soliciteFollowResult.fulfilled, (state, action) => {
-                state.loading = false
-                state.success = true
-                state.error = null
-
-                const indexToRemove = state.user.followSolicitation.findIndex(followerAsk => followerAsk.id === action.payload.rejectedUser._id);
-
-                if (indexToRemove !== -1) {
-                    state.user.followSolicitation.splice(indexToRemove, 1);
-                }
-
-                state.message = action.payload.message
-            })
-            .addCase(soliciteFollowResult.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.payload
             })

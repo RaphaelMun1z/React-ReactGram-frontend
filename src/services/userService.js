@@ -45,21 +45,6 @@ const getUserDetails = async (id) => {
     }
 }
 
-// Solicite Follow Result
-const soliciteFollowResult = async (responseData, token) => {
-    const config = requestConfig("PUT", responseData, token)
-
-    try {
-        const res = await fetch(api + "/users/followresponse", config)
-            .then((res) => res.json())
-            .catch((err) => err)
-
-        return res
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 // Follow somebody
 const follow = async (followedUserId, token) => {
     const config = requestConfig("PUT", followedUserId, token)
@@ -124,7 +109,6 @@ const userService = {
     profile,
     updateProfile,
     getUserDetails,
-    soliciteFollowResult,
     follow,
     unsoliciteFollow,
     unfollow,
