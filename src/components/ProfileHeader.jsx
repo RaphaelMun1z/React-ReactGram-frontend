@@ -15,6 +15,7 @@ import { RiSettings4Line, RiAlertLine, RiUserFollowLine, RiUserFollowFill, RiUse
 import { MdClose, MdOutlineHandshake } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { TbUserQuestion } from "react-icons/tb";
+import { VscSend } from "react-icons/vsc";
 
 const ProfileHeader = ({ id, photos }) => {
     const dispatch = useDispatch()
@@ -24,6 +25,13 @@ const ProfileHeader = ({ id, photos }) => {
 
     const [viewFollowers, setViewFollowers] = useState(false)
     const [viewFollowing, setViewFollowing] = useState(false)
+    const [viewReportForm, setViewReportForm] = useState(false)
+
+    const [reportFormData, setReportFormData] = useState({
+        reportedUserId: user._id,
+        cause: '',
+        message: ''
+    });
 
     const handleFollow = () => {
         dispatch(follow(user))
@@ -50,6 +58,24 @@ const ProfileHeader = ({ id, photos }) => {
     const handleViewFollowing = () => {
         setViewFollowing(!viewFollowing)
     }
+
+    const handleViewReportForm = () => {
+        setViewReportForm(!viewReportForm)
+    }
+
+    const handleReportInputChange = (event) => {
+        const { name, value } = event.target;
+        setReportFormData({
+            ...reportFormData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        console.log(reportFormData)
+    };
 
     return (
         <>
@@ -96,7 +122,7 @@ const ProfileHeader = ({ id, photos }) => {
                                                 )}
                                             </>
                                         )}
-                                        <button className={styles.report}>
+                                        <button className={styles.report} onClick={handleViewReportForm}>
                                             <RiAlertLine />
                                         </button>
                                     </>
@@ -180,6 +206,39 @@ const ProfileHeader = ({ id, photos }) => {
                         {user.following.length === 0 && (
                             <p className={styles.message}><TbUserQuestion />Você está seguindo ninguém.</p>
                         )}
+                    </div>
+                </div>
+            )}
+            {viewReportForm && (
+                <div className={styles.reportContainer} onClick={handleViewReportForm}>
+                    <div className={styles.reportFormContainer} onClick={(e) => e.stopPropagation()}>
+                        <form onSubmit={handleSubmit}>
+                            <h1>Formulário de denúncia</h1>
+                            <label>
+                                <p>Qual o motivo da denúncia</p>
+                                <select name="cause" value={reportFormData.cause} onChange={handleReportInputChange}>
+                                    <option value="">Selecione o motivo</option>
+                                    <option value="Abuso verbal">Abuso verbal</option>
+                                    <option value="Conteúdo inapropriado">Conteúdo inapropriado</option>
+                                    <option value="Discurso de ódio">Discurso de ódio</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </label>
+                            <label>
+                                <p>Descreva sua denúncia</p>
+                                <textarea name="message" value={reportFormData.message} onChange={handleReportInputChange}></textarea>
+                            </label>
+                            <div className={styles.btnContainer}>
+                                <button className={styles.back} onClick={handleViewReportForm}>
+                                    Voltar
+                                    <MdClose />
+                                </button>
+                                <button className={styles.report}>
+                                    Denunciar
+                                    <VscSend />
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

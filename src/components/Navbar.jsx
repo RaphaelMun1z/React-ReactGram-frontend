@@ -76,8 +76,10 @@ const Navbar = () => {
         if (userSearched) {
             setSearchUser(userSearched.search)
 
-            if (userSearched._id === user._id) {
-                setUserData(userSearched)
+            if (user) {
+                if (userSearched._id === user._id) {
+                    setUserData(userSearched)
+                }
             }
         }
     }, [userSearched])

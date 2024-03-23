@@ -48,8 +48,8 @@ const EditPostForm = ({
     }
 
     return (
-        <div className={`${styles.container} ${styles.editPhoto} hide`} ref={editPhotoForm}>
-            <div className={styles.editPhotoInside}>
+        <div className={`${styles.container} ${styles.editPhoto} hide`} ref={editPhotoForm} onClick={handleCancelEdit}>
+            <div className={styles.editPhotoInside} onClick={(e) => e.stopPropagation()}>
                 <p>Editando:</p>
                 {editImage && (
                     <img src={`${uploads}/photos/${editImage}`} alt={editTitle} className={styles.editImage} />

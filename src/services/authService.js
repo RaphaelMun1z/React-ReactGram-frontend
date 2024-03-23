@@ -54,6 +54,7 @@ const soliciteFollowResult = async (responseData, token) => {
             .then((res) => res.json())
             .catch((err) => err)
 
+            console.log(res)
         return res
     } catch (error) {
         console.log(error)
