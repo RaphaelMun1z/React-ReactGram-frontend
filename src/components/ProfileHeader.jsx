@@ -49,8 +49,8 @@ const ProfileHeader = ({ id, photos }) => {
         resetComponentMessage()
     }
 
-    const handleUnfollow = () => {
-        dispatch(unfollow(user._id))
+    const handleUnfollow = (userId) => {
+        dispatch(unfollow(userId))
 
         resetComponentMessage()
     }
@@ -118,7 +118,7 @@ const ProfileHeader = ({ id, photos }) => {
                                         {user && user.followers && (
                                             <>
                                                 {user.followers.some(followerUser => followerUser.id === userAuth._id) ? (
-                                                    <button className={styles.following} onClick={handleUnfollow}>
+                                                    <button className={styles.following} onClick={() => handleUnfollow(user._id)}>
                                                         <p>Seguindo</p>
                                                         <RiUserFollowFill />
                                                     </button>
@@ -177,13 +177,9 @@ const ProfileHeader = ({ id, photos }) => {
                         {user && user.followers.map((follower) => (
                             <div className={styles.user}>
                                 <p><Link to={`/users/${follower.id}`}>{follower.name}</Link></p>
-                                {id === userAuth._id ? (
-                                    <button className={styles.unfollow}><RiUserUnfollowLine /></button>
-                                ) : (
-                                    <Link to={`/users/${follower.id}`}>
-                                        <button className={styles.visit}><CiLocationArrow1 /></button>
-                                    </Link>
-                                )}
+                                <Link to={`/users/${follower.id}`}>
+                                    <button className={styles.visit}><CiLocationArrow1 /></button>
+                                </Link>
                             </div>
                         ))}
 
@@ -207,7 +203,7 @@ const ProfileHeader = ({ id, photos }) => {
                             <div className={styles.user}>
                                 <p><Link to={`/users/${following.id}`}>{following.name}</Link></p>
                                 {id === userAuth._id ? (
-                                    <button className={styles.unfollow}><RiUserUnfollowLine /></button>
+                                    <button className={styles.unfollow} onClick={() => handleUnfollow(following.id)}><RiUserUnfollowLine /></button>
                                 ) : (
                                     <Link to={`/users/${following.id}`}>
                                         <button className={styles.visit}><CiLocationArrow1 /></button>

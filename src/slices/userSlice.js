@@ -195,11 +195,12 @@ export const userSlice = createSlice({
                 state.success = true
                 state.error = null
 
-                const indexToRemove = state.user.followers.findIndex(follower => follower.id === action.payload.authUser._id);
+                const authUserId = action.payload.authUser._id;
+                const unfollowedUserId = action.payload.unfollowedUser._id;
 
-                if (indexToRemove !== -1) {
-                    state.user.followers.splice(indexToRemove, 1);
-                }
+                state.user.following = state.user.following.filter(following => following.id !== unfollowedUserId);
+
+                state.user.followers = state.user.followers.filter(follower => follower.id !== authUserId);
 
                 state.message = action.payload.message
             })
