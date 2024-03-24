@@ -44,8 +44,7 @@ export const login = createAsyncThunk("auth/login",
 )
 
 // Solicite Follow Result
-export const soliciteFollowResult = createAsyncThunk(
-    "user/solicitefollowresult",
+export const soliciteFollowResult = createAsyncThunk("user/solicitefollowresult",
     async (responseData, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token
 

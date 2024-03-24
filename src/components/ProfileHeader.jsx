@@ -1,15 +1,18 @@
 import styles from './ProfileHeader.module.scss'
 
-import { Link, NavLink } from 'react-router-dom'
-
 import { uploads } from '../utils/config'
 
+// Components
+import { Link, NavLink } from 'react-router-dom'
+import Message from '../components/Message'
+
 // Hooks
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 // Redux
 import { follow, unfollow, resetMessage, unsoliciteFollow } from '../slices/userSlice'
+import { reportUser, resetSystemMessage } from '../slices/systemSlice'
 
 import { RiSettings4Line, RiAlertLine, RiUserFollowLine, RiUserFollowFill, RiUserUnfollowLine } from "react-icons/ri";
 import { MdClose, MdOutlineHandshake } from "react-icons/md";
@@ -22,6 +25,7 @@ const ProfileHeader = ({ id, photos }) => {
 
     const { user } = useSelector((state) => state.user)
     const { user: userAuth } = useSelector((state) => state.auth)
+    const { message, error } = useSelector((state) => state.system)
 
     const [viewFollowers, setViewFollowers] = useState(false)
     const [viewFollowing, setViewFollowing] = useState(false)
@@ -36,19 +40,19 @@ const ProfileHeader = ({ id, photos }) => {
     const handleFollow = () => {
         dispatch(follow(user))
 
-        resetMessage()
+        resetComponentMessage()
     }
 
     const handleUnsoliciteFollow = () => {
         dispatch(unsoliciteFollow(user))
 
-        resetMessage()
+        resetComponentMessage()
     }
 
     const handleUnfollow = () => {
         dispatch(unfollow(user._id))
 
-        resetMessage()
+        resetComponentMessage()
     }
 
     const handleViewFollowers = () => {
@@ -71,11 +75,20 @@ const ProfileHeader = ({ id, photos }) => {
         });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmitReport = (e) => {
+        e.preventDefault();
 
-        console.log(reportFormData)
+        dispatch(reportUser(reportFormData))
+
+        resetComponentMessage()
     };
+
+    const resetComponentMessage = () => {
+        setTimeout(() => {
+            dispatch(resetMessage())
+            dispatch(resetSystemMessage())
+        }, 2000)
+    }
 
     return (
         <>
@@ -212,7 +225,7 @@ const ProfileHeader = ({ id, photos }) => {
             {viewReportForm && (
                 <div className={styles.reportContainer} onClick={handleViewReportForm}>
                     <div className={styles.reportFormContainer} onClick={(e) => e.stopPropagation()}>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmitReport}>
                             <h1>Formulário de denúncia</h1>
                             <label>
                                 <p>Qual o motivo da denúncia</p>
@@ -238,6 +251,8 @@ const ProfileHeader = ({ id, photos }) => {
                                     <VscSend />
                                 </button>
                             </div>
+                            {error && <Message msg={error} type="error" />}
+                            {message && <Message msg={message} type="success" />}
                         </form>
                     </div>
                 </div>

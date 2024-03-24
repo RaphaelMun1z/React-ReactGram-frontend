@@ -353,7 +353,7 @@ nav {
                                 }
                             }
                         }
-                        
+
                         .actions {
                             position: relative;
                             display: flex;
@@ -442,18 +442,55 @@ nav {
 
     .navbar {
         display: none !important;
+
+        .navMobile {
+            flex-direction: row !important;
+        }
+
+        form {
+            height: inherit !important;
+            justify-content: center !important;
+        }
+
+        ul {
+            flex-direction: column !important;
+            height: fit-content !important;
+            width: 100% !important;
+
+            li {
+                width: 100% !important;
+                flex-direction: column;
+            }
+        }
     }
 
     .menuMobile {
         margin-left: auto !important;
+        align-self: flex-start !important;
     }
 
     .divMobileNav {
         justify-content: center;
         align-items: center;
+        width: 100% !important;
+
+        .usersListContainer {
+            position: relative !important;
+            margin-top: 1em !important;
+        }
     }
 
     .activeNavbar {
         display: flex !important;
+    }
+
+    .notificationContainer {
+        position: relative !important;
+        transform: translateX(0) !important;
+        left: 0 !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        margin-top: 1em !important;
+        width: 100% !important;
     }
 }
