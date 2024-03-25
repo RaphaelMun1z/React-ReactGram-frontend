@@ -5,7 +5,6 @@ export const requestConfig = (method, data, token = null, image = null) => {
     let config
 
     if (image) {
-        console.log("Há imagem. Config.js")
         config = {
             method: method,
             body: data,
