@@ -22,6 +22,9 @@ const NewPostForm = ({
     const { loading: loadingPhoto, message: messagePhoto, error: errorPhoto } = useSelector((state) => state.photo)
 
     const handleFile = (e) => {
+        console.log("Passou pelo handle file")
+        console.log(image)
+        
         const image = e.target.files[0]
 
         setImage(image)
@@ -29,6 +32,10 @@ const NewPostForm = ({
 
     const submitHandle = (e) => {
         e.preventDefault()
+
+        console.log("Enviou o form de publicação")
+        console.log("Imagem:")
+        console.log(image)
 
         const photoData = {
             title,
