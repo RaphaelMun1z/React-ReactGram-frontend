@@ -38,13 +38,11 @@ const NewPostForm = ({
         // Build form data
         const formData = new FormData()
 
-        const photoFormData = Object.keys(photoData).forEach((key) =>
-            formData.append(key, photoData[key])
-        )
+        const photoFormData = Object.keys(photoData).forEach((key) => {
+            return formData.append(key, photoData[key])
+        })
 
         formData.append("photo", photoFormData)
-
-        console.log(formData)
 
         dispatch(publishPhoto(formData))
 

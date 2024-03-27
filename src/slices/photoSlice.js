@@ -22,8 +22,6 @@ export const publishPhoto = createAsyncThunk(
             return thunkAPI.rejectWithValue(data.errors[0])
         }
 
-        console.log(data)
-
         return data
     }
 )
